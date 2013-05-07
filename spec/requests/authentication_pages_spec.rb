@@ -98,6 +98,19 @@ describe "Authentication" do
         specify { response.should redirect_to(root_path) }
       end
     end
+
+    describe "in the Stacks controller" do
+
+      describe "submitting to the create action" do
+        before { post stacks_path }
+        specify { response.should redirect_to(signin_path) }
+      end
+
+      describe "submitting to the destroy action" do
+        before { delete stack_path(FactoryGirl.create(:stack)) }
+        specify { response.should redirect_to(signin_path) }
+      end
+    end
   end
 
 

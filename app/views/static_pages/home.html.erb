@@ -1,11 +1,24 @@
-<div class="center hero-unit">
-  <h1>Welcome to stack*tician</h1>
+<% if signed_in? %>
+    <div class="row">
+      <aside class="span4">
+        <section>
+          <%= render 'shared/user_info' %>
+        </section>
+        <section>
+          <%= render 'shared/stack_form' %>
+        </section>
+      </aside>
+    </div>
+<% else %>
+    <div class="center hero-unit">
+      <h1>Welcome to stack*tician</h1>
 
-  <h2>
-    This is the home page for stack*tician
-  </h2>
+      <h2>
+        This is the home page for stack*tician
+      </h2>
 
-  <%= link_to "Sign up now!", signup_path, class: "btn btn-large btn-primary" %>
-</div>
+      <%= link_to "Sign up now!", signup_path, class: "btn btn-large btn-primary" %>
+    </div>
 
-<%= link_to image_tag("stacktician_small.png", alt: "stack*tician"), '' %>
+    <%= link_to image_tag("stacktician_small.png", alt: "stack*tician"), '' %>
+<% end %>
