@@ -7,6 +7,11 @@ FactoryGirl.define do
 
     factory :admin do
        admin true
+    end
   end
+
+  factory :stack do
+    stack_name Faker::Lorem.sentence(2)
+    user
   end
 end

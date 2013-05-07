@@ -7,4 +7,13 @@
       </h1>
     </section>
   </aside>
+  <div class="span8">
+    <% if @user.stacks.any? %>
+        <h3>Stacks (<%= @user.stacks.count %>)</h3>
+        <ol class="stacks">
+          <%= render @stacks %>
+        </ol>
+        <%= will_paginate @stacks %>
+    <% end %>
+  </div>
 </div>

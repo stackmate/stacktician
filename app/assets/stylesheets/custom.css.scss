@@ -180,3 +180,21 @@ input {
     }
   }
 }
+
+/* stacks */
+
+.stacks {
+  list-style: none;
+  margin: 10px 0 0 0;
+
+  li {
+    padding: 10px 0;
+    border-top: 1px solid #e8e8e8;
+  }
+}
+.stack_name {
+  display: block;
+}
+.timestamp {
+  color: $grayLight;
+}

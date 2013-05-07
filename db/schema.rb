@@ -11,7 +11,22 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130507180947) do
+ActiveRecord::Schema.define(:version => 20130507203001) do
+
+  create_table "stacks", :force => true do |t|
+    t.string   "stack_id"
+    t.integer  "user_id"
+    t.string   "stack_name"
+    t.string   "status"
+    t.string   "reason"
+    t.string   "description"
+    t.datetime "created_at",  :null => false
+    t.datetime "updated_at",  :null => false
+  end
+
+  add_index "stacks", ["stack_name"], :name => "index_stacks_on_stack_name"
+  add_index "stacks", ["status"], :name => "index_stacks_on_status"
+  add_index "stacks", ["user_id", "created_at"], :name => "index_stacks_on_user_id_and_created_at"
 
   create_table "users", :force => true do |t|
     t.string   "name"

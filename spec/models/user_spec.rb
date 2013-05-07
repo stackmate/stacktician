@@ -31,6 +31,7 @@ describe User do
   it { should respond_to(:authenticate) }
   it { should respond_to(:remember_token) }
   it { should respond_to(:admin) }
+  it { should respond_to(:stacks) }
 
   it { should be_valid }
   it { should_not be_admin }
@@ -123,6 +124,21 @@ describe User do
   describe "remember token" do
     before { @user.save }
     its(:remember_token) { should_not be_blank }
+  end
+  
+  describe "stack associations" do
+
+    before { @user.save }
+    let!(:older_stack) do
+      FactoryGirl.create(:stack, user: @user, created_at: 1.day.ago, stack_name: 'Foo')
+    end
+    let!(:newer_stack) do
+      FactoryGirl.create(:stack, user: @user, created_at: 1.hour.ago, stack_name: 'Bar')
+    end
+
+    it "should have the right stacks in the right order" do
+      @user.stacks.should == [newer_stack, older_stack]
+    end
   end
 end
 
