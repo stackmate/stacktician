@@ -11,7 +11,22 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130507203001) do
+ActiveRecord::Schema.define(:version => 20130508180908) do
+
+  create_table "stack_templates", :force => true do |t|
+    t.string   "template_url"
+    t.integer  "user_id"
+    t.string   "template_name"
+    t.string   "description"
+    t.string   "body"
+    t.string   "category"
+    t.boolean  "public"
+    t.datetime "created_at",    :null => false
+    t.datetime "updated_at",    :null => false
+  end
+
+  add_index "stack_templates", ["public"], :name => "index_stack_templates_on_public"
+  add_index "stack_templates", ["template_name"], :name => "index_stack_templates_on_template_name"
 
   create_table "stacks", :force => true do |t|
     t.string   "stack_id"

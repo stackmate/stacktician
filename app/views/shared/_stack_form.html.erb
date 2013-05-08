@@ -1,7 +1,7 @@
 <%= form_for(@stack) do |f| %>
   <%= render 'shared/error_messages', object: f.object %>
   <div class="field">
-    <%= f.text_area :stack_name, placeholder: "Create New Stack..." %>
+    <%= f.text_field :stack_name, placeholder: "Create New Stack..." %>
   </div>
-  <%= f.submit "Post", class: "btn btn-large btn-primary" %>
+  <%= f.submit "Create Stack", class: "btn btn-large btn-primary" %>
 <% end %>

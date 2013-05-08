@@ -10,7 +10,7 @@ class StacksController < ApplicationController
       flash[:success] = "Stack created!"
       redirect_to root_url
     else
-      render 'static_pages/home'
+      redirect_to root_url
     end
   end
 

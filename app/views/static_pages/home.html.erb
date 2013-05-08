@@ -1,24 +1,39 @@
 <% if signed_in? %>
-    <div class="row">
-      <aside class="span4">
-        <section>
-          <%= render 'shared/user_info' %>
-        </section>
-        <section>
-          <%= render 'shared/stack_form' %>
-        </section>
-      </aside>
-    </div>
+    <% if current_user.stacks.count > 0 %>
+      <div class="row">
+        <aside class="span4">
+              <section>
+                <%= link_to "Create New Stack", signup_path, class: "btn btn-large btn-primary" %>
+              </section>
+            </aside>
+            <div class="span8">
+              <h3>Stacks (<%= current_user.stacks.count %>)</h3>
+              <ol class="stacks">
+                <%= render @stacks %>
+              </ol>
+              <%= will_paginate @stacks %>
+          </div>
+      </div>
+    <% else %>
+        <div class="center hero-unit">
+          <h1> <%= link_to image_tag("stacktician_small.png", alt: "stack*tician"), '' %> </h1>
+
+          <section>
+            You do not have any stacks. Click the "Create New Stack" button below to create a new  CloudFormation Stack on CloudStack
+          </section>
+          <p></p>
+          <%= link_to "Create New Stack", signup_path, class: "btn btn-large btn-primary" %>
+        </div>
+    <% end %>
 <% else %>
     <div class="center hero-unit">
-      <h1>Welcome to stack*tician</h1>
+        <h1> <%= link_to image_tag("stacktician_small.png", alt: "stack*tician"), '' %> </h1>
 
-      <h2>
-        This is the home page for stack*tician
-      </h2>
+      <h4>
+        Deploy your applications and resources on CloudStack using CloudFormation templates
+      </h4>
 
       <%= link_to "Sign up now!", signup_path, class: "btn btn-large btn-primary" %>
     </div>
 
-    <%= link_to image_tag("stacktician_small.png", alt: "stack*tician"), '' %>
 <% end %>

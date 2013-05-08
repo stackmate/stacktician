@@ -11,7 +11,12 @@ FactoryGirl.define do
   end
 
   factory :stack do
-    stack_name Faker::Lorem.sentence(2)
+    stack_name Faker::Lorem.sentence(1)
+    user
+  end
+
+  factory :stack_template do
+    template_name Faker::Lorem.sentence(1)
     user
   end
 end
