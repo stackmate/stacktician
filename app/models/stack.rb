@@ -1,6 +1,7 @@
 class Stack < ActiveRecord::Base
-  attr_accessible :description, :reason, :stack_id, :stack_name, :status
+  attr_accessible :description, :reason, :stack_id, :stack_name, :status, :stack_template_id, :launched_at
   belongs_to :user
+  belongs_to :stack_template
 
   before_save :create_stack_id
 

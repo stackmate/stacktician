@@ -14,9 +14,20 @@ namespace :db do
                    password: password,
                    password_confirmation: password)
     end
+
+    Dir.glob('../../stackmate/templates/*.template') do |t|
+      name = File.basename(t, '.template')
+      name = name.split('_').join(' ').split('-').join(' ')
+      blob = File.read(t)
+      j = JSON.parse(blob)
+      descr = j['Description']
+      StackTemplate.create!(user_id:1, template_name: name, description: descr, body: blob, category: 'General', public: true)
+    end
+
     users = User.all(limit: 6)
     5.times do
-     users.each { |user| name = Faker::Lorem.sentence(1); user.stacks.create!(stack_name: name) }
+     users.each { |user| name = Faker::Lorem.sentence(1); user.stacks.create!(stack_name: name, stack_template_id:1) }
     end
+
   end
 end

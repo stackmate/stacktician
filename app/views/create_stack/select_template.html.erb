@@ -1,0 +1,8 @@
+<h2>Select Template </h2>
+<%= form_for(@stack, :url => wizard_path, :method => :put) do |f| %>
+  <%= f.text_field :stack_name, :placeholder => 'Stack Name' %>
+  <%= f.collection_select(:stack_template_id, StackTemplate.all, :id, :template_name , :prompt => true) %>
+
+  <%= f.submit 'Next', :class => 'btn btn-primary' %>
+<% end %>
+

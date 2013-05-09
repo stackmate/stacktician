@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130508180908) do
+ActiveRecord::Schema.define(:version => 20130509004156) do
 
   create_table "stack_templates", :force => true do |t|
     t.string   "template_url"
@@ -35,8 +35,10 @@ ActiveRecord::Schema.define(:version => 20130508180908) do
     t.string   "status"
     t.string   "reason"
     t.string   "description"
-    t.datetime "created_at",  :null => false
-    t.datetime "updated_at",  :null => false
+    t.datetime "created_at",        :null => false
+    t.datetime "updated_at",        :null => false
+    t.integer  "stack_template_id"
+    t.datetime "launched_at"
   end
 
   add_index "stacks", ["stack_name"], :name => "index_stacks_on_stack_name"

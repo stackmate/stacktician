@@ -1,0 +1,6 @@
+<h2>Enter parameters </h2>
+<%= form_for(@stack, :url => wizard_path, :method => :put) do |f| %>
+  <%= f.text_field :stack_name, :placeholder => 'Stack Name' %>
+  <%= f.submit 'Next', :class => 'btn btn-primary' %>
+<% end %>
+
