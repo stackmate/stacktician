@@ -1,6 +1,14 @@
-<li>
-  <span class="content"><%= stack.stack_name %></span>
-  <span class="timestamp">
-    Launched <%= time_ago_in_words(stack.created_at) %> ago.
-  </span>
-</li>
+<tr>
+  <td><%= stack.stack_name %></td>
+  <td><%= stack.status %></td>
+  <td><%= time_ago_in_words(stack.created_at) %> ago</td>
+  <td>
+    <%= link_to t('.update', :default => t("helpers.links.update")),
+                edit_stack_path(stack), :class => 'btn btn-mini' %>
+    <%= link_to t('.delete', :default => t("helpers.links.delete")),
+                stack_path(stack),
+                :method => :delete,
+                :data => { :confirm => t('.confirm', :default => t("helpers.links.confirm", :default => 'Are you sure?')) },
+                :class => 'btn btn-mini btn-danger' %>
+  </td>
+</tr>

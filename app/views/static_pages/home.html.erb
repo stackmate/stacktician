@@ -1,17 +1,27 @@
 <% if signed_in? %>
     <% if current_user.stacks.count > 0 %>
       <div class="row">
-        <aside class="span4">
+        <aside class="span3">
               <section>
                 <%= link_to "Create New Stack", create_stack_path(:select_template), class: "btn btn-large btn-primary" %>
               </section>
             </aside>
-            <div class="span8">
+            <div class="span9">
               <h3>Stacks (<%= current_user.stacks.count %>)</h3>
-              <ol class="stacks">
-                <%= render @stacks %>
-              </ol>
-              <%= will_paginate @stacks %>
+              <%- model_class = Stack -%>
+              <table class="table table-striped">
+                <thead>
+                  <tr>
+                    <th><%= model_class.human_attribute_name(:stack_name) %></th>
+                    <th><%= model_class.human_attribute_name(:status) %></th>
+                    <th><%= model_class.human_attribute_name(:launched_at) %></th>
+                    <th><%=t '.actions', :default => t("helpers.actions") %></th>
+                  </tr>
+                </thead>
+                <tbody>
+                    <%= render @stacks %>
+                </tbody>
+              </table>
           </div>
       </div>
     <% else %>
