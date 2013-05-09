@@ -1,7 +1,3 @@
 <h2>Launch your stack </h2>
-<%= form_for(@stack, :url => wizard_path, :method => :put) do |f| %>
-  <%= f.text_field :stack_name, :placeholder => 'Stack Name' %>
-  <%= f.submit 'Next', :class => 'btn btn-primary' %>
-<% end %>
-
+<%= link_to "Launch Your Stack", root_url, class: "btn btn-large btn-primary" %>
 

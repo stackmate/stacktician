@@ -1,4 +1,10 @@
 <h2>Enter parameters </h2>
+<dl class="dl-horizontal">
+    <dt>Stack Description</dt>
+    <dd> <%= @descr %> </dd>
+    <dt>Specify Parameters</dt>
+    <dd> Below are the parameters associated with your CloudFormation template. You may review and proceed with the default parameters or make customizations as needed below. </dd>
+</dl>
 <%= form_for(@stack, :url => wizard_path, :method => :put) do |f| %>
   <%= f.text_field :stack_name, :placeholder => 'Stack Name' %>
   <%= f.submit 'Next', :class => 'btn btn-primary' %>
