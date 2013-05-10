@@ -2,11 +2,20 @@
 <dl class="dl-horizontal">
     <dt>Stack Description</dt>
     <dd> <%= @descr %> </dd>
-    <dt>Specify Parameters</dt>
-    <dd> Below are the parameters associated with your CloudFormation template. You may review and proceed with the default parameters or make customizations as needed below. </dd>
+    <dt>Specify Params</dt>
+    <dd> Below are the parameters associated with your CloudFormation template. <p/>You may review and proceed with the default parameters or make customizations as needed below. </dd>
 </dl>
-<%= form_for(@stack, :url => wizard_path, :method => :put) do |f| %>
-  <%= f.text_field :stack_name, :placeholder => 'Stack Name' %>
-  <%= f.submit 'Next', :class => 'btn btn-primary' %>
-<% end %>
 
+<div class="row">
+  <div class="span6 offset3">
+    <dl class="dl-horizontal">
+        <%= form_for(@stack, :url => wizard_path, :method => :put) do |f| %>
+          <%= f.fields_for :stack_parameters do |p| %>
+              <dt><strong><%= p.label :param_value, p.object.param_name %><strong> </dt>
+              <dd><%= p.text_field :param_value %> </dd>
+          <% end %>
+        <%= f.submit "Next", class: "btn btn-large btn-primary" %>
+     <% end %>
+ </dl>
+ </div>
+ </div>

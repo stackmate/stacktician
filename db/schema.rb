@@ -11,7 +11,26 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130509004156) do
+ActiveRecord::Schema.define(:version => 20130510013333) do
+
+  create_table "stack_parameters", :force => true do |t|
+    t.string   "param_name"
+    t.string   "param_value"
+    t.integer  "stack_id"
+    t.datetime "created_at",  :null => false
+    t.datetime "updated_at",  :null => false
+  end
+
+  create_table "stack_resources", :force => true do |t|
+    t.string   "logical_id"
+    t.string   "physical_id"
+    t.integer  "stack_id"
+    t.string   "status"
+    t.string   "description"
+    t.string   "type"
+    t.datetime "created_at",  :null => false
+    t.datetime "updated_at",  :null => false
+  end
 
   create_table "stack_templates", :force => true do |t|
     t.string   "template_url"
