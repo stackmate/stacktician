@@ -4,8 +4,8 @@ class Stack < ActiveRecord::Base
   belongs_to :stack_template
   has_many :stack_resources, :dependent => :destroy
   has_many :stack_parameters, :dependent => :destroy
-  #accepts_nested_attributes_for :stack_parameters, :reject_if => lambda { |p| p[:param_value].blank? }
-  accepts_nested_attributes_for :stack_parameters
+  accepts_nested_attributes_for :stack_parameters, :reject_if => lambda { |p| p[:param_value].blank? }
+  #accepts_nested_attributes_for :stack_parameters
 
   before_save :create_stack_id
 
