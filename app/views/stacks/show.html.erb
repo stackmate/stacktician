@@ -10,12 +10,20 @@
 </div>
 <ul class="nav nav-tabs">
   <li class="active">
-    <a href="#">Description</a>
+    <a href="#tab-descr" data-toggle="tab">Description</a>
   </li>
-  <li><a href="#">Outputs</a></li>
-  <li><a href="#">Resources</a></li>
+  <li><a href="#" data-toggle="tab">Outputs</a></li>
+  <li><a href="#" data-toggle="tab">Resources</a></li>
   <li><a href="#">Events</a></li>
   <li><a href="#">Template</a></li>
-  <li><a href="#">Parameters</a></li>
+  <li><a href="#tab-params" data-toggle="tab">Parameters</a></li>
   <li><a href="#">Tags</a></li>
 </ul>
+<div class="tab-content">
+    <div class="tab-pane active" id="tab-descr">
+        <%= render 'descr' %>
+    </div>
+    <div class="tab-pane" id="tab-params">
+        <%= render 'params' %>
+    </div>
+</div>

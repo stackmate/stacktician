@@ -1,5 +1,5 @@
 <tr>
-  <td><%= stack.stack_name %></td>
+  <td><%= link_to stack.stack_name,  stack_path(stack) %></td>
   <td><%= stack.status %></td>
   <td><%= time_ago_in_words(stack.created_at) %> ago</td>
   <td>

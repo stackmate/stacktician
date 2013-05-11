@@ -52,7 +52,7 @@ h2 {
   font-size: 1.7em;
   letter-spacing: -1px;
   margin-bottom: 30px;
-  text-align: center;
+  /* text-align: center; */
   font-weight: normal;
   color: $grayLight;
 }
@@ -69,14 +69,14 @@ p {
   float: left;
   margin-right: 10px;
   font-size: 1.7em;
-  color: white;
+  color: black;
   /*text-transform: uppercase;*/
   letter-spacing: -1px;
-  padding-top: 9px;
+  /*padding-top: 9px;*/
   font-weight: bold;
-  line-height: 1;
+  line-height: 2;
   &:hover {
-    color: white;
+    color: orange;
     text-decoration: none;
   }
 }
