@@ -5,6 +5,10 @@ class StacksController < ApplicationController
     @stacks = current_user.stacks
   end
 
+  def show
+    @stack = Stack.find(params[:id])
+  end
+
   def create
     @stack = current_user.stacks.build(params[:stack])
     if @stack.save

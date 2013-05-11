@@ -1,0 +1,21 @@
+<% provide(:title, @stack.stack_name) %>
+<div class="row">
+  <aside class="span4">
+    <section>
+      <h2>
+        <%= @stack.stack_name %>
+      </h2>
+    </section>
+  </aside>
+</div>
+<ul class="nav nav-tabs">
+  <li class="active">
+    <a href="#">Description</a>
+  </li>
+  <li><a href="#">Outputs</a></li>
+  <li><a href="#">Resources</a></li>
+  <li><a href="#">Events</a></li>
+  <li><a href="#">Template</a></li>
+  <li><a href="#">Parameters</a></li>
+  <li><a href="#">Tags</a></li>
+</ul>
