@@ -26,24 +26,24 @@
       </div>
     <% else %>
         <div class="center hero-unit">
-          <h1> <%= link_to image_tag("stacktician_small.png", alt: "stack*tician"), '' %> </h1>
+          <h1> <%= link_to image_tag("stacktician_big_orange.png", alt: "stack*tician"), '' %> </h1>
 
           <section>
             You do not have any stacks. Click the "Create New Stack" button below to create a new  CloudFormation Stack on CloudStack
           </section>
           <p></p>
-          <%= link_to "Create New Stack", create_stack_path(:select_template), class: "btn btn-large btn-primary" %>
+          <%= link_to "Create New Stack", create_stack_path(:select_template), class: "btn btn-large btn-success" %>
         </div>
     <% end %>
 <% else %>
     <div class="center hero-unit">
-        <h1> <%= link_to image_tag("stacktician_small.png", alt: "stack*tician"), '' %> </h1>
+        <h1> <%= link_to image_tag("stacktician_big_orange.png", alt: "stack*tician"), '' %> </h1>
 
       <h4>
         Deploy your applications and resources on CloudStack using CloudFormation templates
       </h4>
 
-      <%= link_to "Sign up now!", signup_path, class: "btn btn-large btn-primary" %>
+      <%= link_to "Sign up now!", signup_path, class: "btn btn-large btn-success" %>
     </div>
 
 <% end %>
