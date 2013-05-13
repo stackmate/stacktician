@@ -1,0 +1,21 @@
+<h2 class="text-left"> Stack Resources</h2>
+<table class="table table-striped">
+  <thead>
+    <tr>
+      <th>Logical Id </th>
+      <th>Physical Id</th>
+      <th>Type</th>
+      <th>Status</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @stack.stack_resources.each do |rsrc| %>
+      <tr>
+        <td><%= rsrc.logical_id %></td>
+        <td><%= rsrc.physical_id %></td>
+        <td><%= rsrc.typ %></td>
+        <td><%= rsrc.status %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>

@@ -1,2 +1,18 @@
 <h2 class="text-left"> Stack Parameters </h2>
 <em class="text-left"> The following paramters were specified when the stack was created </em>
+<table class="table table-striped">
+  <thead>
+    <tr>
+      <th>Name </th>
+      <th>Value</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @stack.stack_parameters.each do |param| %>
+      <tr>
+        <td><%= param.param_name %></td>
+        <td><%= param.param_value %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>

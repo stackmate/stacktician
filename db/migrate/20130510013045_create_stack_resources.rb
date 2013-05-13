@@ -6,7 +6,7 @@ class CreateStackResources < ActiveRecord::Migration
       t.integer :stack_id
       t.string :status
       t.string :description
-      t.string :type
+      t.string :typ
 
       t.timestamps
     end

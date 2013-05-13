@@ -27,7 +27,7 @@ ActiveRecord::Schema.define(:version => 20130510013333) do
     t.integer  "stack_id"
     t.string   "status"
     t.string   "description"
-    t.string   "type"
+    t.string   "typ"
     t.datetime "created_at",  :null => false
     t.datetime "updated_at",  :null => false
   end

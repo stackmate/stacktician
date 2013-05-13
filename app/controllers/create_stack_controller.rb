@@ -67,7 +67,7 @@ class CreateStackController < ApplicationController
         j['Resources'].each {  |key, val|
           resource = stack.stack_resources.build()
           resource.logical_id = key
-          resource.type = val['Type']
+          resource.typ = val['Type']
           resource.status = 'CREATE_IN_PROGRESS'
           resources << resource
         }

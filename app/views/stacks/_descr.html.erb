@@ -8,7 +8,7 @@
           <td>Stack Id</td>
           <td><%= @stack.stack_id %></td>
       </tr>
-      <tr>
+      <tr class="<%= stack_status_style(@stack) %>" >
           <td>Status</td>
           <td><%= @stack.status %></td>
       </tr>
