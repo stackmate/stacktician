@@ -18,7 +18,7 @@ class UsersController < ApplicationController
       # Handle a successful save.
       flash[:success] = "Welcome to stack*tician!"
       sign_in @user
-      redirect_to @user
+      redirect_to root_url
     else
       render 'new'
     end
