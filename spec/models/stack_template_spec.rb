@@ -17,7 +17,7 @@ describe StackTemplate do
 
   describe "when user_id is not present" do
     before { @template.user_id = nil }
-    it { should_not be_valid }
+    
     describe "with blank name" do
       before { @template.template_name = " " }
       it { should_not be_valid }
