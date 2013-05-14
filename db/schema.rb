@@ -37,7 +37,7 @@ ActiveRecord::Schema.define(:version => 20130510013333) do
     t.integer  "user_id"
     t.string   "template_name"
     t.string   "description"
-    t.string   "body"
+    t.text   "body", :limit => nil
     t.string   "category"
     t.boolean  "public"
     t.datetime "created_at",    :null => false
