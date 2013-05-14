@@ -5,7 +5,7 @@ class CreateStackTemplates < ActiveRecord::Migration
       t.integer :user_id
       t.string :template_name
       t.string :description
-      t.string :text, :limit => nil
+      t.text :body, :limit => nil
       t.string :category
       t.boolean :public
 
