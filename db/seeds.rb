@@ -45,6 +45,7 @@ links.each do |l|
     StackTemplate.create!(user_id:1, template_url: l, template_name: name, description: descr, body: blob, category: 'General', public: true)
   rescue
       p 'Failed to create stack template'
+      puts $!.inspect, $@
       next
   end
 end
