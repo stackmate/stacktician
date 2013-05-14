@@ -37,12 +37,14 @@ links.each do |l|
   begin
     j = JSON.parse(blob)
   rescue
+    p 'Failed to parse stack template'
     next
   end
   descr = j['Description']
   begin
     StackTemplate.create!(user_id:1, template_url: l, template_name: name, description: descr, body: blob, category: 'General', public: true)
   rescue
+      p 'Failed to create stack template'
       next
   end
 end
