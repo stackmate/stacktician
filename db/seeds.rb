@@ -8,12 +8,12 @@
 
 require 'open-uri'
 
-User.create!(name: "Admin User",
+u = User.create!(name: "Admin User",
              email: "admin@stacktician.org",
              password: "password",
              password_confirmation: "password")
 
-
+u.toggle!(:admin)
 doc = Nokogiri::HTML(open("http://aws.amazon.com/cloudformation/aws-cloudformation-templates"))
 links = []
 doc.xpath('//a[@href]').each do |link|
