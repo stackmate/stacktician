@@ -13,6 +13,25 @@ class Stack < ActiveRecord::Base
   validates :user_id, presence: true
   default_scope order: 'stacks.created_at DESC'
 
+  def params_from_template
+    j = JSON.parse(self.stack_template.body)
+    j['Parameters'].each do |p| 
+      param = self.stack_parameters.build()
+      param.param_name = p[0]
+      param.param_value = p[1]['Default']
+    end
+  end
+
+  def resources_from_template
+    j = JSON.parse(self.stack_template.body)
+    j['Resources'].each {  |key, val|
+      resource = self.stack_resources.build()
+      resource.logical_id = key
+      resource.typ = val['Type']
+      resource.status = 'CREATE_IN_PROGRESS'
+    }
+  end
+
   private
 
     def create_stack_id

@@ -26,8 +26,7 @@ class CreateStackController < ApplicationController
           @stack = current_user.stacks.build()
           @stack.update_attributes(params[:stack])
           session[:current_stack] = @stack.stack_name
-          stack_template = StackTemplate.find_by_id(@stack.stack_template_id)
-          @params = params_from_template @stack, stack_template.body
+          @stack.params_from_template 
           logger.debug "params: #{@stack.stack_parameters.length}"
         when :enter_params
           @stack = Stack.find_by_stack_name(session[:current_stack])
@@ -36,8 +35,7 @@ class CreateStackController < ApplicationController
         when :launch
           @stack = Stack.find_by_stack_name(session[:current_stack])
           @stack.status = 'CREATE_IN_PROGRESS'
-          stack_template = StackTemplate.find_by_id(@stack.stack_template_id)
-          @resources = resources_from_template @stack, stack_template.body
+          @stack.resources_from_template
           logger.debug "stack: update :launch #{@stack.attributes.inspect}"
       end
 
@@ -47,31 +45,5 @@ class CreateStackController < ApplicationController
   def finish_wizard_path
      root_url
   end
-
-  private
-    def params_from_template(stack, template_body)
-        j = JSON.parse(template_body)
-        params = []
-        j['Parameters'].each do |p| 
-          param = stack.stack_parameters.build()
-          param.param_name = p[0]
-          param.param_value = p[1]['Default']
-          params << param
-        end
-        params
-    end
-
-    def resources_from_template(stack, template_body)
-        j = JSON.parse(template_body)
-        resources = []
-        j['Resources'].each {  |key, val|
-          resource = stack.stack_resources.build()
-          resource.logical_id = key
-          resource.typ = val['Type']
-          resource.status = 'CREATE_IN_PROGRESS'
-          resources << resource
-        }
-        resources
-    end
 
 end
