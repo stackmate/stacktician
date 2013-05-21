@@ -43,6 +43,8 @@ class CreateStackController < ApplicationController
   end
 
   def finish_wizard_path
+     @stack = Stack.find_by_stack_name(session[:current_stack])
+     @stack.launch
      root_url
   end
 

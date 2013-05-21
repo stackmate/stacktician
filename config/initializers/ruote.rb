@@ -1,6 +1,7 @@
 require 'rufus-json/automatic'
 require 'ruote'
 require 'ruote/storage/fs_storage'
+require 'stackmate'
  
 #
 # set up ruote storage
@@ -13,6 +14,7 @@ RUOTE_STORAGE =
 #
 # set up ruote dashboard
  
+StackMate.configure('NOOP')
 RUOTE = if defined?(Rake)
   #
   # do not start a ruote worker in a rake task
@@ -24,4 +26,6 @@ else
   #
   Ruote::Dashboard.new(Ruote::Worker.new(RUOTE_STORAGE))
 end
+
+RUOTE.noisy = true
  
