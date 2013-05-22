@@ -7,12 +7,14 @@ module Stacktician
 
      def on_reply(work_item)
        logger.debug "In Stacktician::on_reply #{@opts.inspect}"
-       stack = Stack.find(@opts['stack_id'])
-       resource = stack.stack_resources.find_by_logical_id(@opts['participant'])
-       resource.status = 'CREATE_COMPLETE'
-       #logger.info "#{work_item[@opts['participant']].inspect}"
-       resource.physical_id = work_item[@opts['participant']]['physical_id']
-       resource.save
+       ActiveRecord::Base.connection_pool.with_connection do
+         stack = Stack.find(@opts['stack_id'])
+         resource = stack.stack_resources.find_by_logical_id(@opts['participant'])
+         resource.status = 'CREATE_COMPLETE'
+         #logger.info "#{work_item[@opts['participant']].inspect}"
+         resource.physical_id = work_item[@opts['participant']]['physical_id']
+         resource.save
+       end
      end
   end
 
@@ -37,9 +39,11 @@ module Stacktician
 
     def on_workitem
       logger.debug "In Stacktician::Output.on_workitem #{@opts.inspect}"
-      stack = Stack.find(@opts['stack_id'])
-      stack.status = 'CREATE_COMPLETE'
-      stack.save
+      ActiveRecord::Base.connection_pool.with_connection do
+        stack = Stack.find(@opts['stack_id'])
+        stack.status = 'CREATE_COMPLETE'
+        stack.save
+      end
       reply
     end
 
