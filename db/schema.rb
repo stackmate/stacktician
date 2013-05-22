@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130510013333) do
+ActiveRecord::Schema.define(:version => 20130522225054) do
 
   create_table "stack_parameters", :force => true do |t|
     t.string   "param_name"
@@ -36,8 +36,8 @@ ActiveRecord::Schema.define(:version => 20130510013333) do
     t.string   "template_url"
     t.integer  "user_id"
     t.string   "template_name"
-    t.text   "description", :limit => nil
-    t.text   "body", :limit => nil
+    t.text     "description"
+    t.text     "body"
     t.string   "category"
     t.boolean  "public"
     t.datetime "created_at",    :null => false
@@ -72,6 +72,8 @@ ActiveRecord::Schema.define(:version => 20130510013333) do
     t.string   "password_digest"
     t.string   "remember_token"
     t.boolean  "admin",           :default => false
+    t.string   "api_key"
+    t.string   "sec_key"
   end
 
   add_index "users", ["remember_token"], :name => "index_users_on_remember_token"
