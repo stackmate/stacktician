@@ -66,7 +66,8 @@ class Stack < ActiveRecord::Base
             RUOTE.register_participant p, Stacktician::Participants.class_for(t), opts
         end
 
-        RUOTE.register_participant 'Output', 'StackMate::Output'
+        opts = {:stack_id => self.id}
+        RUOTE.register_participant 'Output', 'Stacktician::Output', opts
         participants << 'Output'
         pdef = Ruote.define self.stack_name.to_s() do
             cursor do

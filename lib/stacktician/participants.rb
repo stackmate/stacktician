@@ -24,6 +24,30 @@ module Stacktician
     end
 
   end
+
+  class Output < Ruote::Participant
+    
+    def initialize(opts)
+        @opts = opts
+    end
+
+    def logger
+       ::Rails.logger
+    end
+
+    def on_workitem
+      logger.debug "In Stacktician::Output.on_workitem #{@opts.inspect}"
+      stack = Stack.find(@opts['stack_id'])
+      stack.status = 'CREATE_COMPLETE'
+      stack.save
+      reply
+    end
+
+    def on_reply(work_item)
+      logger.debug "In Stacktician::Output.on_reply #{@opts.inspect}"
+     end
+
+  end
 end
 
 
