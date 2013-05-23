@@ -167,7 +167,7 @@ GEM
       rufus-scheduler (>= 2.0.16)
       rufus-treechecker (>= 1.0.8)
       sourcify (= 0.5.0)
-    sass (3.2.8)
+    sass (3.2.9)
     sass-rails (3.2.5)
       railties (~> 3.2.0)
       sass (>= 3.1.10)
@@ -223,7 +223,7 @@ PLATFORMS
 DEPENDENCIES
   annotate (= 2.5.0)
   bcrypt-ruby (= 3.0.1)
-  bootstrap-sass (= 2.3.1)
+  bootstrap-sass (~> 2.3.1.0)
   bootstrap-will_paginate (= 0.0.6)
   capybara (= 1.1.2)
   cloudstack_ruby_client (>= 0.0.4)
