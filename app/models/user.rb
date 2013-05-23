@@ -18,6 +18,7 @@ class User < ActiveRecord::Base
 
   before_save { |user| user.email = email.downcase }
   before_save :create_remember_token
+  before_save :perhaps_get_keys
 
 
   validates :name, presence: true,  length: { maximum: 50 }
@@ -30,6 +31,14 @@ class User < ActiveRecord::Base
 
     def create_remember_token
       self.remember_token = SecureRandom.urlsafe_base64
+    end
+
+    def perhaps_get_keys
+      keypair = Stacktician::CloudStack::create_and_get_keys(self.name, self.email, self.password)
+      if keypair
+          self.api_key = keypair[:api_key]
+          self.sec_key = keypair[:sec_key]
+      end
     end
 
 end

@@ -1,3 +1,5 @@
+require 'yaml'
+
 module Stacktician
   module Participants
 
@@ -20,6 +22,59 @@ module Stacktician
 
   class NoOpResource < StackMate::NoOpResource
     include Participants
+
+    def initialize(opts)
+      @opts = opts
+    end
+
+  end
+
+  class CloudStackInstance < StackMate::CloudStackInstance
+    include Participants
+
+    def initialize(opts)
+      @opts = opts
+      super(opts)
+   end
+
+   def load_local_mappings()
+      begin
+          @localized = YAML.load(ENV['CS_LOCAL'])
+      rescue
+          logger.warning "Warning: Failed to load localized mappings from environment var CS_LOCAL"
+      end
+   end
+
+  end
+
+  class CloudStackSecurityGroup < StackMate::CloudStackSecurityGroup
+    include Participants
+
+    def initialize(opts)
+      @opts = opts
+      super(opts)
+    end
+
+  end
+
+  class WaitCondition < StackMate::WaitCondition
+    include Participants
+
+    def logger
+       ::Rails.logger
+    end
+
+    def initialize(opts)
+      @opts = opts
+    end
+  end
+
+  class WaitConditionHandle < StackMate::WaitConditionHandle
+    include Participants
+
+    def logger
+       ::Rails.logger
+    end
 
     def initialize(opts)
       @opts = opts

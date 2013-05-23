@@ -62,7 +62,8 @@ class Stack < ActiveRecord::Base
 
         participants.each do |p|
             t = templ['Resources'][p]['Type']
-            opts = {:stack_id => self.id, :participant => p, :typ => t}
+            opts = {:stack_id => self.id, :participant => p, :typ => t, 
+                :URL => ENV['CS_URL'], :APIKEY => self.user.api_key, :SECKEY => self.user.sec_key}
             RUOTE.register_participant p, Stacktician::Participants.class_for(t), opts
         end
 

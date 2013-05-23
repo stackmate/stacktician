@@ -14,7 +14,6 @@ RUOTE_STORAGE =
 #
 # set up ruote dashboard
  
-StackMate.configure('NOOP') if ENV['DEMO_MODE'] == 'NOOP'
 RUOTE = if defined?(Rake)
   #
   # do not start a ruote worker in a rake task
