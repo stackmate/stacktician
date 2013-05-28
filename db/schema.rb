@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130522225054) do
+ActiveRecord::Schema.define(:version => 20130524001336) do
 
   create_table "stack_parameters", :force => true do |t|
     t.string   "param_name"
@@ -30,6 +30,7 @@ ActiveRecord::Schema.define(:version => 20130522225054) do
     t.string   "typ"
     t.datetime "created_at",  :null => false
     t.datetime "updated_at",  :null => false
+    t.string   "ruote_feid"
   end
 
   create_table "stack_templates", :force => true do |t|
@@ -58,6 +59,7 @@ ActiveRecord::Schema.define(:version => 20130522225054) do
     t.datetime "updated_at",        :null => false
     t.integer  "stack_template_id"
     t.datetime "launched_at"
+    t.string   "ruote_wfid"
   end
 
   add_index "stacks", ["stack_name"], :name => "index_stacks_on_stack_name"

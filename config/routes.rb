@@ -13,6 +13,8 @@ Stacktician::Application.routes.draw do
   match '/signin',  to: 'sessions#new'
   match '/signout', to: 'sessions#destroy', via: :delete
 
+  match '/waitcondition/*handle_spec', to: 'stacks#wait_condition'
+
 
 
 end

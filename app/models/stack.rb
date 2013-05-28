@@ -1,6 +1,6 @@
 
 class Stack < ActiveRecord::Base
-  attr_accessible :description, :reason, :stack_id, :stack_name, :status, :stack_template_id, :launched_at, :stack_parameters_attributes
+  attr_accessible :description, :reason, :stack_id, :stack_name, :status, :stack_template_id, :launched_at, :stack_parameters_attributes, :ruote_wfid
   belongs_to :user
   belongs_to :stack_template
   has_many :stack_resources, :dependent => :destroy
@@ -43,6 +43,7 @@ class Stack < ActiveRecord::Base
       parser = StackMate::Stacker.new(self.stack_template.body, self.stack_name, parameters)
       pdef = process_definition(parser, templ)
       wfid = RUOTE.launch( pdef, parser.templ)
+      update_attributes(:launched_at => Time.now, :ruote_wfid => wfid.to_s)
       #RUOTE.wait_for(wfid)
       logger.error { "engine error : #{RUOTE.errors.first.message}"} if RUOTE.errors.first
       logger.info  "Finished launch #{wfid}"
@@ -71,7 +72,7 @@ class Stack < ActiveRecord::Base
         RUOTE.register_participant 'Output', 'Stacktician::Output', opts
         participants << 'Output'
         pdef = Ruote.define self.stack_name.to_s() do
-            cursor do
+            cursor :timeout => '300s' do
                 participants.collect{ |name| __send__(name) }
             end
         end
