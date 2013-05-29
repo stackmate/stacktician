@@ -50,6 +50,40 @@ class Stack < ActiveRecord::Base
 
   end
 
+  def wait_condition (handle)
+    j = JSON.parse(self.stack_template.body)
+    #find the wait conditions that get unblocked by the supplied wait handle
+    wait_conditions = j['Resources'].inject([]) {
+        |result, (key, val)|  result << key if val['Type'] == 'AWS::CloudFormation::WaitCondition' && 
+        val['Properties']['Handle']['Ref'] == handle;
+        result
+    }
+    return if wait_conditions.empty? #TODO: throw exception?
+
+    updated = 0
+    wait_conditions.each { |w|
+      resource = self.stack_resources.find_by_logical_id(w)
+      condition = RUOTE.participant(w)
+      if resource == nil or condition == nil
+        logger.warning "Did not find wait handle #{handle} in db or workflow engine"
+        break
+      end
+      #get the workitem by calling Ruote::StorageParticipant API
+      wi = condition.by_participant(w)[0]
+      #Tell the workflow to move forward
+      condition.proceed(wi)
+      #update the db
+      resource.status = 'CREATE_COMPLETE'
+      resource.save
+      logger.info "Found wait handle #{handle} in db and workflow engine and unblocked wait condition #{w}"
+      updated += 1
+    }
+    if updated == 0
+      logger.warning "Did not find the handle #{handle} that can unblock any wait condition"
+    end
+  end
+
+
   private
 
     def create_stack_id

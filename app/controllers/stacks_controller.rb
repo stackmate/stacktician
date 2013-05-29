@@ -23,15 +23,17 @@ class StacksController < ApplicationController
   end
 
   #Respond to cfn-signal HTTP calls to unblock wait conditions
-  #FIXME: move to stack model
+  #FIXME: unsure of response if handle is not found
   def wait_condition
-    handle = params[:handle_spec].split('/')[1]
-    #FIXME: get stack id from handle and wait condition name from stack_resource
-    @condition = RUOTE.participant('WaitCondition') 
-    #get the workitem by calling Ruote::StorageParticipant API
-    wi = @condition.by_participant('WaitCondition')[0]
-    #Tell the workflow to move forward
-    @condition.proceed(wi)
+    #format of handle spec is 
+    # <wfid>/<wait handle name>
+    # e.g., 20130529-0032-noyokuse-piriyasa/WaitHandle
+    handle_parts = params[:handle_spec].split('/')
+    wfid = handle_parts[0]
+    handle = handle_parts[1]
+    @stack = Stack.find_by_ruote_wfid(wfid)
+    return if @stack == nil #TODO throw exception?
+    @stack.wait_condition(handle)
     #cfn-signal does not expect anything in response
     render :nothing =>true
   end
