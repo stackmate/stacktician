@@ -65,11 +65,15 @@ class Stack < ActiveRecord::Base
       resource = self.stack_resources.find_by_logical_id(w)
       condition = RUOTE.participant(w)
       if resource == nil or condition == nil
-        logger.warning "Did not find wait handle #{handle} in db or workflow engine"
+        logger.warn "Did not find wait handle #{handle} in db or workflow engine"
         break
       end
       #get the workitem by calling Ruote::StorageParticipant API
       wi = condition.by_participant(w)[0]
+      if wi == nil
+        logger.warn "Did not find work item for participant #{w}"
+        break #TODO throw exception
+      end
       #Tell the workflow to move forward
       condition.proceed(wi)
       #update the db
@@ -79,7 +83,7 @@ class Stack < ActiveRecord::Base
       updated += 1
     }
     if updated == 0
-      logger.warning "Did not find the handle #{handle} that can unblock any wait condition"
+      logger.warn "Did not find the handle #{handle} that can unblock any wait condition"
     end
   end
 
