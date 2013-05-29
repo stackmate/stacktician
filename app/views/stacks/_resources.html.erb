@@ -10,11 +10,16 @@
   </thead>
   <tbody>
     <% @stack.stack_resources.each do |rsrc| %>
-      <tr>
+        <!-- <tr class="<%= resource_status_style(rsrc) %>" > -->
+        <tr>
         <td><%= rsrc.logical_id %></td>
-        <td><%= rsrc.physical_id %></td>
+        <% if uri?(rsrc.physical_id) %>
+            <td> <a href="<%= rsrc.physical_id %>"><%= rsrc.physical_id %></a> </td>
+        <% else %>
+            <td> <%= rsrc.physical_id %> </td>
+        <% end %>
         <td><%= rsrc.typ %></td>
-        <td><%= rsrc.status %></td>
+        <td class="<%= resource_status_style(rsrc) %>"><%= rsrc.status %></td>
       </tr>
     <% end %>
   </tbody>
