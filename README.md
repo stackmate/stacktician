@@ -50,6 +50,7 @@ $ rake db:seed
 ```
 
 * You can run Stacktician in NOOP mode: in this case it will not try to create resources on CloudStack, but just update the database with success. Before you run the Rails server:
+
 ```
 $ export DEMO_MODE=NOOP
 ```
@@ -66,6 +67,7 @@ CS_LOCAL="---\nservice_offerings:\n  m1.small: 1c8db272-f95a-406c-bce3-39192ce96
 CS_LOCAL is a YAML string that provides the mappings from AWS entities to your CloudStack entities.
 
 * Heroku
+
 There should be a demo app (NOOP mode) running at http://stacktician.herokuapp.com/
 If you want to deploy to Heroku, you can use heroku config:set to set the environment variables.
 
@@ -74,9 +76,12 @@ If you want to deploy to Heroku, you can use heroku config:set to set the enviro
 
 
 ## TODO
-* Query-based API
+* Query-based API server (http://awsdocs.s3.amazonaws.com/AWSCloudFormation/latest/qrc_cfn_api.pdf)
 * Allow users to specify stack template URL
-* Performance
+* Update stack / delete stack
+* Metadata server to serve cfn-get-metadata
+* Performance (use queue (Resque for ex)  to queue API jobs)
+* Rollback
 
 ## Feedback & bug reports
 
