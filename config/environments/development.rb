@@ -35,3 +35,6 @@ Stacktician::Application.configure do
   # Expands the lines which load the assets
   config.assets.debug = true
 end
+
+#configure the wait condition base url (used by the WaitHandle participant)
+Stacktician.configure(:wait_condition_base_url, 'http://localhost:3000/waitcondition/')

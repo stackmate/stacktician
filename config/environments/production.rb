@@ -65,3 +65,6 @@ Stacktician::Application.configure do
   # with SQLite, MySQL, and PostgreSQL)
   # config.active_record.auto_explain_threshold_in_seconds = 0.5
 end
+
+#configure the wait condition base url (used by the WaitHandle participant)
+Stacktician.configure(:wait_condition_base_url, ENV['BASE_URL']+'waitcondition/')

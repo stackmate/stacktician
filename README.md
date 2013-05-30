@@ -49,12 +49,34 @@ $ rake db:migrate
 $ rake db:seed
 ```
 
+* You can run Stacktician in NOOP mode: in this case it will not try to create resources on CloudStack, but just update the database with success. Before you run the Rails server:
+```
+$ export DEMO_MODE=NOOP
+```
+
+Otherwise, the following environment variables need to be set (change to your environment's specifics)
+
+```
+CS_URL=http://localhost:8080/client/api
+CS_ADMIN_APIKEY=6b4IAqDFqSfpBqap1GEhKS4U8PIOpxnoS0tuAX46jXAiE7hCBO-l2zKvWm-FuyTQUFddfR59oNqMSUbSCZgoQw
+CS_ADMIN_SECKEY=WM9HIBLc59XYhr2kCAS94eCrGp789cSYwSys1pgEUuV2_rhFxej8vds-sd9eMu6RtxM7Kk0K0k9G8Rtl1oxl-A
+CS_LOCAL="---\nservice_offerings:\n  m1.small: 1c8db272-f95a-406c-bce3-39192ce965fa\ntemplates:\n  ami-1b814f72: 3ea4563e-c7eb-11e2-b0ed-7f3baba63e45\nzoneid: b3409835-02b0-4d21-bba4-1f659402117e\n"
+```
+
+CS_LOCAL is a YAML string that provides the mappings from AWS entities to your CloudStack entities.
+
+* Heroku
+There should be a demo app (NOOP mode) running at http://stacktician.herokuapp.com/
+If you want to deploy to Heroku, you can use heroku config:set to set the environment variables.
+
+
 * Stacktician lets you self-create a login. Sign in and create a Cloudformation stack!
 
 
 ## TODO
-* Actually embed stackmate, after making stackmate a gem
-* Admin interface to set up the CloudStack endpoint and API keys for the user
+* Query-based API
+* Allow users to specify stack template URL
+* Performance
 
 ## Feedback & bug reports
 
