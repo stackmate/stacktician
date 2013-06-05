@@ -132,27 +132,32 @@ module Stacktician
 
   end
 
-  class Output < Ruote::Participant
-    
-    def initialize(opts)
-        @opts = opts
-    end
+  class CloudStackOutput < StackMate::CloudStackOutput
 
+    def initialize(opts)
+      @opts = opts
+    end
+    
     def logger
        ::Rails.logger
     end
 
-    #mark the stack execution as complete
-    #FIXME: generate the output required in the template as well.
-    #this may require API calls to determine ip addresses of instances etc
-    def on_workitem
-      logger.debug "In Stacktician::Output.on_workitem #{@opts.inspect}"
+    #mark the stack execution as complete and update the db with the outputs
+    def on_reply
+      outputs = workitem.fields['Outputs']
+      logger.debug "In Stacktician::CloudStackOutput.on_reply #{outputs.inspect}"
       ActiveRecord::Base.connection_pool.with_connection do
         stack = Stack.find(@opts['stack_id'])
+        outputs.each do |key, val|
+          v = val['Value']
+          logger.debug "Output: key = #{key}, value = #{v} descr = #{val['Description']}"
+          stack_output = stack.stack_outputs.find_by_key(key)
+          stack_output.value = v
+          stack_output.save
+        end
         stack.status = 'CREATE_COMPLETE'
         stack.save
       end
-      reply
     end
 
   end

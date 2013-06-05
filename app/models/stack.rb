@@ -5,6 +5,7 @@ class Stack < ActiveRecord::Base
   belongs_to :stack_template
   has_many :stack_resources, :dependent => :destroy
   has_many :stack_parameters, :dependent => :destroy
+  has_many :stack_outputs, :dependent => :destroy
   accepts_nested_attributes_for :stack_parameters, :reject_if => lambda { |p| p[:param_value].blank? }
   #accepts_nested_attributes_for :stack_parameters
 
@@ -30,6 +31,16 @@ class Stack < ActiveRecord::Base
       resource.logical_id = key
       resource.typ = val['Type']
       resource.status = 'CREATE_IN_PROGRESS'
+    }
+  end
+
+  def outputs_from_template
+    j = JSON.parse(self.stack_template.body)
+    j['Outputs'].each {  |key, val|
+      output = self.stack_outputs.build()
+      output.key = key
+      output.value = val['Value']
+      output.descr = val['Description']
     }
   end
 
@@ -107,7 +118,7 @@ class Stack < ActiveRecord::Base
         end
 
         opts = {:stack_id => self.id}
-        RUOTE.register_participant 'Output', 'Stacktician::Output', opts
+        RUOTE.register_participant 'Output', Stacktician::Participants.class_for('Outputs'), opts
         participants << 'Output'
         pdef = Ruote.define self.stack_name.to_s() do
             cursor :timeout => '300s' do

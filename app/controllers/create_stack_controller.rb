@@ -36,6 +36,7 @@ class CreateStackController < ApplicationController
           @stack = Stack.find_by_stack_name(session[:current_stack])
           @stack.status = 'CREATE_IN_PROGRESS'
           @stack.resources_from_template
+          @stack.outputs_from_template
           logger.debug "stack: update :launch #{@stack.attributes.inspect}"
       end
 

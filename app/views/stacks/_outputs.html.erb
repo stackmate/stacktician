@@ -1,0 +1,19 @@
+<h2 class="text-left"> Stack Outputs</h2>
+<table class="table table-striped">
+  <thead>
+    <tr>
+      <th>Key</th>
+      <th>Value</th>
+      <th>Description </th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @stack.stack_outputs.each do |output| %>
+      <tr>
+        <td><%= output.key %></td>
+        <td><%= output.value %></td>
+        <td><%= output.descr %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>

@@ -11,7 +11,16 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130524001336) do
+ActiveRecord::Schema.define(:version => 20130605224956) do
+
+  create_table "stack_outputs", :force => true do |t|
+    t.string   "key"
+    t.string   "value"
+    t.text     "descr"
+    t.datetime "created_at", :null => false
+    t.datetime "updated_at", :null => false
+    t.integer  "stack_id"
+  end
 
   create_table "stack_parameters", :force => true do |t|
     t.string   "param_name"
