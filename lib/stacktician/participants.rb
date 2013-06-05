@@ -52,7 +52,7 @@ module Stacktician
       begin
           @localized = YAML.load(ENV['CS_LOCAL'])
       rescue
-          logger.warning "Warning: Failed to load localized mappings from environment var CS_LOCAL"
+          logger.warn "Warning: Failed to load localized mappings from environment var CS_LOCAL"
       end
    end
 
