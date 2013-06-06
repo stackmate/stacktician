@@ -37,6 +37,37 @@ module Stacktician
 
   end
 
+  #Noop output
+  class Output < Ruote::Participant
+
+    def initialize(opts)
+      @opts = opts
+    end
+
+    def logger
+       ::Rails.logger
+    end
+
+    def on_workitem
+      outputs = workitem.fields['Outputs']
+      logger.debug "In Stacktician::Output.on_workitem #{outputs.inspect}"
+      ActiveRecord::Base.connection_pool.with_connection do
+        stack = Stack.find(@opts['stack_id'])
+        outputs.each do |key, val|
+          v = val['Value']
+          logger.debug "Output: key = #{key}, value = #{v} descr = #{val['Description']}"
+          stack_output = stack.stack_outputs.find_by_key(key)
+          stack_output.value = v
+          stack_output.save
+        end
+        stack.status = 'CREATE_COMPLETE'
+        stack.save
+      end
+      reply
+    end
+
+  end
+
   class CloudStackInstance < StackMate::CloudStackInstance
     include Participants
 
