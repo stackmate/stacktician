@@ -53,10 +53,21 @@ class Stack < ActiveRecord::Base
       templ = JSON.parse(self.stack_template.body)
       parser = StackMate::Stacker.new(self.stack_template.body, self.stack_name, parameters)
       pdef = process_definition(parser, templ)
-      wfid = RUOTE.launch( pdef, parser.templ)
+      #logger.debug "pdef= #{pdef.inspect}"
+      #logger.debug "parser.templ = #{parser.templ.inspect}"
+      wfid = RUOTE.launch(pdef, parser.templ)
+      logger.info  "Finished launch #{wfid}"
       update_attributes(:launched_at => Time.now, :ruote_wfid => wfid.to_s)
-      #RUOTE.wait_for(wfid)
-      logger.error { "engine error : #{RUOTE.errors.first.message}"} if RUOTE.errors.first
+      wait_task = Thread.new(wfid, self.stack_name) { |wfid, stack_name|
+          RUOTE.wait_for(wfid)
+          errors = RUOTE.errors(wfid)
+          logger.info "Stack completed execution"
+          if errors.first
+            logger.error { "engine error : #{RUOTE.errors(wfid).first.message}"} 
+          else
+            logger.info "Stack #{stack_name} completed execution"
+          end
+      }
       logger.info  "Finished launch #{wfid}"
 
   end
