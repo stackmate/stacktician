@@ -38,7 +38,7 @@ module Stacktician
   end
 
   #Noop output
-  class Output < Ruote::Participant
+  class Output < StackMate::Output
 
     def initialize(opts)
       @opts = opts
@@ -48,7 +48,7 @@ module Stacktician
        ::Rails.logger
     end
 
-    def on_workitem
+    def on_reply
       outputs = workitem.fields['Outputs']
       logger.debug "In Stacktician::Output.on_workitem #{outputs.inspect}"
       ActiveRecord::Base.connection_pool.with_connection do
@@ -63,7 +63,6 @@ module Stacktician
         stack.status = 'CREATE_COMPLETE'
         stack.save
       end
-      reply
     end
 
   end
