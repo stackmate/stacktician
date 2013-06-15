@@ -130,12 +130,17 @@ class Stack < ActiveRecord::Base
 
         opts = {:stack_id => self.id}
         RUOTE.register_participant 'Output', Stacktician::Participants.class_for('Outputs'), opts
-        participants << 'Output'
-        pdef = Ruote.define self.stack_name.to_s() do
-            cursor :timeout => '300s' do
-                participants.collect{ |name| __send__(name) }
+        #participants << 'Output'
+        pdef = Ruote.define @stackname.to_s() do
+            cursor :timeout => '300s', :on_error => 'rollback', :on_timeout => 'rollback' do
+                participants.collect{ |name| __send__(name, :operation => :create) }
+                __send__('Output')
+            end
+            define 'rollback', :timeout => '300s' do
+                participants.reverse_each.collect {|name| __send__(name, :operation => :rollback) }
             end
         end
+
         pdef
     end
         
