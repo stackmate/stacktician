@@ -1,6 +1,8 @@
+require 'cloudstack_ruby_client'
+
 module Stacktician
   module CloudStack
-    def CloudStack.create_and_get_keys(name, email, password)
+    def self.get_client()
       initialized = true
       url = ENV['CS_URL']  or initialized = false
       apikey = ENV['CS_ADMIN_APIKEY']  or initialized = false
@@ -9,6 +11,14 @@ module Stacktician
           return nil
       end
       client = CloudstackRubyClient::Client.new(url, apikey, seckey, false)
+      client
+    end
+
+    def self.create_user(name, email, password)
+      client = self.get_client()
+      if !client
+          return nil
+      end
       args = {}
       args['accounttype'] = '0'
       args['firstname'] = name
@@ -19,11 +29,51 @@ module Stacktician
       args['password'] = password 
       resp = client.send('createAccount', args)
       userid = resp['account']['user'][0]['id']
+      userid
+    end
+
+    def CloudStack.create_user_keys(userid)
+      client = self.get_client()
+      if !client
+          return nil
+      end
       keypair = {}
       resp = client.send('registerUserKeys', {'id' => userid})
+      if resp.nil? or resp.empty?
+          return nil
+      end
       keypair[:api_key] = resp['userkeys']['apikey']
       keypair[:sec_key] = resp['userkeys']['secretkey']
       keypair
     end
+
+    def CloudStack.get_user_keys(name)
+      client = self.get_client()
+      if !client
+          return nil
+      end
+      resp = client.send('listUsers', {'username' => name})
+      if resp.nil? or resp.empty?
+          return nil
+      end
+      keypair = {}
+      keypair[:api_key] = resp['user'][0]['apikey']
+      keypair[:sec_key] = resp['user'][0]['secretkey']
+      if keypair[:api_key].nil? or keypair[:sec_key].nil?
+          userid = resp['user'][0]['id']
+          keypair = self.create_user_keys(userid)
+      end
+      keypair
+    end
+
+    def CloudStack.create_and_get_keys(username, email, password)
+        keypair = self.get_user_keys(username)
+        if keypair.nil?
+            userid = self.create_user(username, email, password)
+            keypair = self.create_user_keys(userid)
+        end
+        keypair
+    end
+
   end
 end
