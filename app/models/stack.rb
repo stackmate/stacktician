@@ -68,7 +68,7 @@ class Stack < ActiveRecord::Base
             logger.info "Stack #{stack_name} completed execution"
           end
       }
-      logger.info  "Finished launch #{wfid}"
+      logger.info  "Finished full stack launch #{wfid}"
 
   end
 
@@ -117,8 +117,8 @@ class Stack < ActiveRecord::Base
     end
 
     def process_definition (parser, templ)
-        participants = parser.strongly_connected_components.flatten
-
+        #participants = parser.strongly_connected_components.flatten
+        participants = parser.tsort
         logger.info("Ordered list of participants: #{participants}")
 
         participants.each do |p|
@@ -130,6 +130,7 @@ class Stack < ActiveRecord::Base
 
         opts = {:stack_id => self.id}
         RUOTE.register_participant 'Output', Stacktician::Participants.class_for('Outputs'), opts
+
         #participants << 'Output'
         pdef = Ruote.define @stackname.to_s() do
             cursor :timeout => '300s', :on_error => 'rollback', :on_timeout => 'rollback' do
