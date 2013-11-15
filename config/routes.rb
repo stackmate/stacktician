@@ -15,6 +15,19 @@ Stacktician::Application.routes.draw do
 
   match '/waitcondition/*handle_spec', to: 'stacks#wait_condition', :as => :waitcondition
 
-
+  namespace :api, :defaults => {:format => :json} do
+    resources :stacks do
+      member do
+        get :status
+        get :resources
+        get :events
+        get :resource
+        get :outputs
+        get :parameters
+      end
+    end
+    resources :templates
+    
+  end
 
 end
