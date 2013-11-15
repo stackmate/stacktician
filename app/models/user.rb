@@ -19,7 +19,7 @@ class User < ActiveRecord::Base
   before_save { |user| user.email = email.downcase }
   before_save :create_remember_token
   before_save :perhaps_get_keys
-
+  before_save :set_api_keys
 
   validates :name, presence: true,  length: { maximum: 50 }
   VALID_EMAIL_REGEX = /\A[\w+\-.]+@[a-z\d\-.]+\.[a-z]+\z/i
@@ -33,11 +33,20 @@ class User < ActiveRecord::Base
       self.remember_token = SecureRandom.urlsafe_base64
     end
 
+    def set_api_keys
+      if self.api_key.nil?
+        self.api_key = SecureRandom.urlsafe_base64(64)
+      end
+      if self.sec_key.nil?
+        self.sec_key = SecureRandom.urlsafe_base64(64)
+      end
+    end
+    
     def perhaps_get_keys
       keypair = Stacktician::CloudStack::create_and_get_keys(self.name, self.email, self.password)
       if keypair
-          self.api_key = keypair[:api_key]
-          self.sec_key = keypair[:sec_key]
+          self.cs_api_key = keypair[:api_key]
+          self.cs_sec_key = keypair[:sec_key]
       end
     end
 
