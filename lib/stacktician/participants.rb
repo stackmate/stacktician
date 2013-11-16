@@ -50,10 +50,9 @@ class StackMate::CloudStackOutput
     ActiveRecord::Base.connection_pool.with_connection do
       stack = Stack.find(@opts['stack_id'])
       outputs.each do |key, val|
-        v = val['Value']
-        logger.debug "Output: key = #{key}, value = #{v} descr = #{val['Description']}"
+        logger.debug "Output: key = #{key}, value = #{val}"
         stack_output = stack.stack_outputs.find_by_key(key)
-        stack_output.value = v
+        stack_output.value = val
         stack_output.save
       end
       stack.status = 'CREATE_COMPLETE'
@@ -250,10 +249,9 @@ module Stacktician
       ActiveRecord::Base.connection_pool.with_connection do
         stack = Stack.find(@opts['stack_id'])
         outputs.each do |key, val|
-          v = val['Value']
-          logger.debug "Output: key = #{key}, value = #{v} descr = #{val['Description']}"
+          logger.debug "Output: key = #{key}, value = #{val} "
           stack_output = stack.stack_outputs.find_by_key(key)
-          stack_output.value = v
+          stack_output.value = val
           stack_output.save
         end
         stack.status = 'CREATE_COMPLETE'

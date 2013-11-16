@@ -84,6 +84,7 @@ GEM
       treetop (~> 1.4.8)
     mime-types (1.23)
     multi_json (1.7.2)
+    netaddr (1.5.0)
     nokogiri (1.5.9)
     parslet (1.4.0)
       blankslate (~> 2.0)
@@ -182,9 +183,9 @@ GEM
       rack (~> 1.0)
       tilt (~> 1.1, != 1.3.0)
     sqlite3 (1.3.5)
-    stackmate (0.0.4)
-      cloudstack_ruby_client (>= 0.0.4)
+    stackmate (0.1.0)
       json
+      netaddr
       ruote (>= 2.3.0)
       sinatra (~> 1.3.6)
       yajl-ruby (= 1.1.0)
@@ -220,7 +221,7 @@ DEPENDENCIES
   bootstrap-sass (~> 2.3.1.0)
   bootstrap-will_paginate (= 0.0.6)
   capybara (= 1.1.2)
-  cloudstack_ruby_client (>= 0.0.4)
+  cloudstack_ruby_client (= 0.0.4)
   coffee-rails (= 3.2.2)
   factory_girl_rails (= 4.1.0)
   faker (= 1.0.1)
@@ -234,7 +235,7 @@ DEPENDENCIES
   sinatra (~> 1.3.6)
   spork (= 0.9.2)
   sqlite3 (= 1.3.5)
-  stackmate (>= 0.0.4)
+  stackmate (>= 0.1.0)
   thin
   uglifier (= 1.2.3)
   wicked
