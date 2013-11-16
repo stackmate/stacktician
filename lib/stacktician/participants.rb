@@ -61,6 +61,35 @@ class StackMate::CloudStackOutput
   end
 end
 
+#Noop case
+class StackMate::Output
+  def initialize(opts)
+    @opts = opts
+  end
+
+  def logger
+    ::Rails.logger
+  end
+  #mark the stack execution as complete and update the db with the outputs
+  def on_reply(work_item)
+    p "In outputs"
+    outputs = work_item['Outputs']
+    logger.debug "In Stacktician::Output.on_reply #{outputs.inspect}"
+    ActiveRecord::Base.connection_pool.with_connection do
+      stack = Stack.find(@opts['stack_id'])
+      outputs.each do |key, val|
+        v = val['Value']
+        logger.debug "Output: key = #{key}, value = #{v}"
+        stack_output = stack.stack_outputs.find_by_key(key)
+        stack_output.value = v
+        stack_output.save
+      end
+      stack.status = 'CREATE_COMPLETE'
+      stack.save
+    end
+  end
+end
+
 module Stacktician
   # Use this to override existing (e.g., stackmate's) resource
   # so that we can save the physical id to  the database
