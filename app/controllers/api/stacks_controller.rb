@@ -12,6 +12,7 @@ class API::StacksController < ApplicationController
       stack['description'] = s.description
       stack['create_timestamp'] = s.created_at
       stack['update_timestamp'] = s.updated_at
+      stack['creation_timeout'] = s.timeout
       stack['parameters'] = params_for_stack(s)
       stack['resources'] = resources_for_stack(s)
       stack['outputs'] = outputs_for_stack(s)
@@ -21,18 +22,23 @@ class API::StacksController < ApplicationController
   end
 
   def show
-    @stack = @api_user.stacks.find_by_stack_id!(params[:id])
-    s = {}
-    s['name'] = @stack.stack_name
-    s['status'] = @stack.status
-    s['id'] = @stack.stack_id
-    s['description'] = @stack.description
-    s['create_timestamp'] = @stack.created_at
-    s['update_timestamp'] = @stack.updated_at
-    s['parameters'] = params_for_stack(@stack)
-    s['resources'] = resources_for_stack(@stack)
-    s['outputs'] = outputs_for_stack(@stack)
-    render :json => {"error" => "false","response"=>{"stack" => s}}
+    begin
+      @stack = @api_user.stacks.find_by_stack_id!(params[:id])
+      s = {}
+      s['name'] = @stack.stack_name
+      s['status'] = @stack.status
+      s['id'] = @stack.stack_id
+      s['description'] = @stack.description
+      s['create_timestamp'] = @stack.created_at
+      s['update_timestamp'] = @stack.updated_at
+      s['creation_timeout'] = @stack.timeout
+      s['parameters'] = params_for_stack(@stack)
+      s['resources'] = resources_for_stack(@stack)
+      s['outputs'] = outputs_for_stack(@stack)
+      render :json => {"error" => "false","response"=>{"stack" => s}}
+    rescue ActiveRecord::RecordNotFound
+      render :json => {"error" => "true","message"=>"Stack " + params[:id] +" not found"}
+    end
   end
 
   def new
@@ -66,8 +72,12 @@ class API::StacksController < ApplicationController
   end
 
   def status
-    @stack = @api_user.stacks.find_by_stack_id!(params[:id])
-    render :json => {"error" => "false","response"=>{"stack_id" => params[:id],"status" => @stack.status}}
+    begin
+      @stack = @api_user.stacks.find_by_stack_id!(params[:id])
+      render :json => {"error" => "false","response"=>{"stack_id" => params[:id],"status" => @stack.status}}
+    rescue ActiveRecord::RecordNotFound
+      render :json => {"error" => "true","message"=>"Stack " + params[:id] +" not found"}
+    end
   end
 
   def resource
@@ -84,27 +94,43 @@ class API::StacksController < ApplicationController
   end
 
   def resources
-    @stack = @api_user.stacks.find_by_stack_id!(params[:id])
-    resources = resources_for_stack(@stack)
-    render :json => {"error" => "false","response"=>{"stack_id" => params[:id],"resources" => resources}}
+    begin
+      @stack = @api_user.stacks.find_by_stack_id!(params[:id])
+      resources = resources_for_stack(@stack)
+      render :json => {"error" => "false","response"=>{"stack_id" => params[:id],"resources" => resources}}
+    rescue ActiveRecord::RecordNotFound
+      render :json => {"error" => "true","message"=>"Stack " + params[:id] +" not found"}
+    end
   end
 
   def parameters
-    @stack = @api_user.stacks.find_by_stack_id!(params[:id])
-    parameters = params_for_stack(@stack)
-    render :json => {"error" => "false","response"=>{"stack_id" => params[:id],"parameters" => parameters}}
+    begin
+      @stack = @api_user.stacks.find_by_stack_id!(params[:id])
+      parameters = params_for_stack(@stack)
+      render :json => {"error" => "false","response"=>{"stack_id" => params[:id],"parameters" => parameters}}
+    rescue ActiveRecord::RecordNotFound
+      render :json => {"error" => "true","message"=>"Stack " + params[:id] +" not found"}
+    end
   end
 
   def events
-    @stack = @api_user.stacks.find_by_stack_id!(params[:id])
-    events = events_for_stack(@stack)
-    render :json => {"error" => "false","response"=>{"stack_id" => params[:id],"events" => events}}
+    begin
+      @stack = @api_user.stacks.find_by_stack_id!(params[:id])
+      events = events_for_stack(@stack)
+      render :json => {"error" => "false","response"=>{"stack_id" => params[:id],"events" => events}}
+    rescue ActiveRecord::RecordNotFound
+      render :json => {"error" => "true","message"=>"Stack " + params[:id] +" not found"}
+    end
   end
 
   def outputs
-    @stack = @api_user.stacks.find_by_stack_id!(params[:id])
-    outputs = outputs_for_stack(@stack)
-    render :json => {"error" => "false","response"=>{"stack_id" => params[:id],"status"=>@stack.status,"outputs" => outputs}}
+    begin
+      @stack = @api_user.stacks.find_by_stack_id!(params[:id])
+      outputs = outputs_for_stack(@stack)
+      render :json => {"error" => "false","response"=>{"stack_id" => params[:id],"status"=>@stack.status,"outputs" => outputs}}
+    rescue ActiveRecord::RecordNotFound
+      render :json => {"error" => "true","message"=>"Stack " + params[:id] +" not found"}
+    end
   end
 
   def ensure_parameters(template_id)

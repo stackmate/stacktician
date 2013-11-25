@@ -1,6 +1,6 @@
 
 class Stack < ActiveRecord::Base
-  attr_accessible :description, :reason, :stack_id, :stack_name, :status, :stack_template_id, :launched_at, :stack_parameters_attributes, :ruote_wfid
+  attr_accessible :description, :reason, :stack_id, :stack_name, :status, :stack_template_id, :launched_at, :stack_parameters_attributes, :ruote_wfid, :timeout
   belongs_to :user
   belongs_to :stack_template
   has_many :stack_resources, :dependent => :destroy
@@ -50,6 +50,8 @@ class Stack < ActiveRecord::Base
       parameters['AWS::StackName'] = self.stack_name
       parameters['AWS::StackId'] = self.stack_id
       parameters['AWS::Region'] = 'us-east-1' #TODO handle this better
+      parameters['CloudStack::StackName'] = self.stack_name
+      parameters['CloudStack::StackId'] = self.stack_id
       templ = JSON.parse(self.stack_template.body)
       parser = StackMate::Stacker.new(self.stack_template.body, self.stack_name, parameters)
       pdef = process_definition(parser, templ)
@@ -124,20 +126,24 @@ class Stack < ActiveRecord::Base
         participants.each do |p|
             t = templ['Resources'][p]['Type']
             opts = {:stack_id => self.id, :participant => p, :typ => t, 
-                :URL => ENV['CS_URL'], :APIKEY => self.user.api_key, :SECKEY => self.user.sec_key}
+                :URL => ENV['CS_URL'], :APIKEY => self.user.cs_api_key, :SECKEY => self.user.cs_sec_key}
             RUOTE.register_participant p, Stacktician::Participants.class_for(t), opts
         end
 
         opts = {:stack_id => self.id}
         RUOTE.register_participant 'Output', Stacktician::Participants.class_for('Outputs'), opts
+        #RUOTE.register_participant 'Notify', Stacktician::Participants.class_for('StackMate::StackNotifier'), opts
 
         #participants << 'Output'
+        timeout = self.timeout.to_s + "s"
+        #RUOTE.noisy = false
         pdef = Ruote.define @stackname.to_s() do
-            cursor :timeout => '300s', :on_error => 'rollback', :on_timeout => 'rollback' do
+            cursor :timeout => timeout, :on_error => 'rollback', :on_timeout => 'rollback' do
                 participants.collect{ |name| __send__(name, :operation => :create) }
                 __send__('Output')
             end
-            define 'rollback', :timeout => '300s' do
+            define 'rollback', :timeout => timeout do
+                #__send__('Notify')
                 participants.reverse_each.collect {|name| __send__(name, :operation => :rollback) }
             end
         end
