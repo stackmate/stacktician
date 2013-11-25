@@ -47,7 +47,8 @@ class User < ActiveRecord::Base
 
     def perhaps_get_keys
       keypair = Stacktician::CloudStack::create_and_get_keys(self.name, self.email, self.password)
-      if keypair && self.cs_api_key.empty? && self.cs_sec_key.empty?
+      if keypair && self.cs_api_key.to_s.empty? && self.cs_sec_key.to_s.empty?
+      #TODO better key validation
           self.cs_api_key = keypair[:api_key]
           self.cs_sec_key = keypair[:sec_key]
       end
