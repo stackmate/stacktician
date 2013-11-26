@@ -18,6 +18,12 @@
         <%= f.label :password_confirmation, "Confirm Password" %>
         <%= f.password_field :password_confirmation %>
 
+        <%= f.label :cs_api_key, "CloudStack API key (if registered already)"%>
+        <%= f.text_field :cs_api_key%>
+
+        <%= f.label :cs_sec_key, "CloudStack Secret key (if registered already)"%>
+        <%= f.text_field :cs_sec_key%> 
+
         <%= f.submit "Save changes", class: "btn btn-large btn-primary" %>
     <% end %>
 

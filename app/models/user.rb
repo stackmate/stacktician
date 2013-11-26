@@ -11,7 +11,7 @@
 #
 
 class User < ActiveRecord::Base
-  attr_accessible :email, :name, :password, :password_confirmation, :remember_token
+  attr_accessible :email, :name, :password, :password_confirmation, :remember_token, :cs_api_key, :cs_sec_key
   has_secure_password
   has_many :stacks, dependent: :destroy
   has_many :stack_templates, dependent: :destroy
@@ -26,6 +26,9 @@ class User < ActiveRecord::Base
   validates :email, presence: true, format: { with: VALID_EMAIL_REGEX }, uniqueness: {case_sensitive: false}
   validates :password, presence: true, length: { minimum: 6 }
   validates :password_confirmation, presence: true
+  #validates :cs_api_key, presence: true
+  #validates :cs_sec_key, presence: true
+  #TODO decide on integrated CCP users
 
   private
 
@@ -33,11 +36,29 @@ class User < ActiveRecord::Base
       self.remember_token = SecureRandom.urlsafe_base64
     end
 
+<<<<<<< HEAD
     def perhaps_get_keys
       keypair = Stacktician::CloudStack::create_and_get_keys(self.name, self.email, self.password)
       if keypair
           self.api_key = keypair[:api_key]
           self.sec_key = keypair[:sec_key]
+=======
+    def set_api_keys
+      if self.api_key.nil?
+        self.api_key = SecureRandom.urlsafe_base64(64)
+      end
+      if self.sec_key.nil?
+        self.sec_key = SecureRandom.urlsafe_base64(64)
+      end
+    end
+
+    def perhaps_get_keys
+      keypair = Stacktician::CloudStack::create_and_get_keys(self.name, self.email, self.password)
+      if keypair && self.cs_api_key.to_s.empty? && self.cs_sec_key.to_s.empty?
+      #TODO better key validation
+          self.cs_api_key = keypair[:api_key]
+          self.cs_sec_key = keypair[:sec_key]
+>>>>>>> 1f2d43127f8a756e7d6e97a79b2b149ba31217d6
       end
     end
 

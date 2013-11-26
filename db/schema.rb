@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130605224956) do
+ActiveRecord::Schema.define(:version => 20131125035728) do
 
   create_table "stack_outputs", :force => true do |t|
     t.string   "key"
@@ -64,11 +64,12 @@ ActiveRecord::Schema.define(:version => 20130605224956) do
     t.string   "status"
     t.string   "reason"
     t.string   "description"
-    t.datetime "created_at",        :null => false
-    t.datetime "updated_at",        :null => false
+    t.datetime "created_at",                         :null => false
+    t.datetime "updated_at",                         :null => false
     t.integer  "stack_template_id"
     t.datetime "launched_at"
     t.string   "ruote_wfid"
+    t.integer  "timeout",           :default => 600
   end
 
   add_index "stacks", ["stack_name"], :name => "index_stacks_on_stack_name"
@@ -85,6 +86,8 @@ ActiveRecord::Schema.define(:version => 20130605224956) do
     t.boolean  "admin",           :default => false
     t.string   "api_key"
     t.string   "sec_key"
+    t.string   "cs_api_key"
+    t.string   "cs_sec_key"
   end
 
   add_index "users", ["remember_token"], :name => "index_users_on_remember_token"
