@@ -44,15 +44,17 @@ class StackMate::CloudStackOutput
   end
   #mark the stack execution as complete and update the db with the outputs
   def on_reply(work_item)
-    p "In outputs"
     outputs = work_item['Outputs']
     logger.debug "In Stacktician::CloudStackOutput.on_reply #{outputs.inspect}"
     ActiveRecord::Base.connection_pool.with_connection do
       stack = Stack.find(@opts['stack_id'])
       outputs.each do |key, val|
-        logger.debug "Output: key = #{key}, value = #{val}"
+        v = val['Value']
+        logger.debug "Output: key = #{key}, value = #{v} descr = #{val['Description']}"
+        #logger.debug "Output: key = #{key}, value = #{val}"
         stack_output = stack.stack_outputs.find_by_key(key)
-        stack_output.value = val
+        stack_output.value = v
+        #stack_output.value = val
         stack_output.save
       end
       stack.status = 'CREATE_COMPLETE'
@@ -72,7 +74,6 @@ class StackMate::Output
   end
   #mark the stack execution as complete and update the db with the outputs
   def on_reply(work_item)
-    p "In outputs"
     outputs = work_item['Outputs']
     logger.debug "In Stacktician::Output.on_reply #{outputs.inspect}"
     ActiveRecord::Base.connection_pool.with_connection do
@@ -278,9 +279,12 @@ module Stacktician
       ActiveRecord::Base.connection_pool.with_connection do
         stack = Stack.find(@opts['stack_id'])
         outputs.each do |key, val|
-          logger.debug "Output: key = #{key}, value = #{val} "
+          v = val['Value']
+          logger.debug "Output: key = #{key}, value = #{v} descr = #{val['Description']}"
+          #logger.debug "Output: key = #{key}, value = #{val} "
           stack_output = stack.stack_outputs.find_by_key(key)
-          stack_output.value = val
+          stack_output.value = v
+          #stack_output.value = val
           stack_output.save
         end
         stack.status = 'CREATE_COMPLETE'

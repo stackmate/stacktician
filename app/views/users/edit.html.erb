@@ -18,6 +18,12 @@
         <%= f.label :password_confirmation, "Confirm Password" %>
         <%= f.password_field :password_confirmation %>
 
+        <%= f.label :api_key, "API key for requests"%>
+        <%= f.text_field :api_key, :readonly => true%>
+
+        <%= f.label :cs_sec_key, "Secret key for requests"%>
+        <%= f.text_field :sec_key, :readonly => true%>
+
         <%= f.label :cs_api_key, "CloudStack API key (if registered already)"%>
         <%= f.text_field :cs_api_key%>
 
