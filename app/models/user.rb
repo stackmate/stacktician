@@ -36,13 +36,6 @@ class User < ActiveRecord::Base
       self.remember_token = SecureRandom.urlsafe_base64
     end
 
-<<<<<<< HEAD
-    def perhaps_get_keys
-      keypair = Stacktician::CloudStack::create_and_get_keys(self.name, self.email, self.password)
-      if keypair
-          self.api_key = keypair[:api_key]
-          self.sec_key = keypair[:sec_key]
-=======
     def set_api_keys
       if self.api_key.nil?
         self.api_key = SecureRandom.urlsafe_base64(64)
@@ -58,7 +51,6 @@ class User < ActiveRecord::Base
       #TODO better key validation
           self.cs_api_key = keypair[:api_key]
           self.cs_sec_key = keypair[:sec_key]
->>>>>>> 1f2d43127f8a756e7d6e97a79b2b149ba31217d6
       end
     end
 
