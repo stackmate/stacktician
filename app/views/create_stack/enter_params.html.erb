@@ -14,7 +14,7 @@
               <dt><strong><%= p.label :param_value, p.object.param_name %><strong> </dt>
               <dd><%= p.text_field :param_value %> </dd>
           <% end %>
-          <dt><strong><%= f.label :timeout, "Stack Creation Timeout (seconds)"%><strong></dt>
+          <dt><strong><%= f.label :timeout, "Stack Timeout (seconds)"%><strong></dt>
           <dd><%= f.text_field :timeout %></dd>
         <%= f.submit "Next", class: "btn btn-large btn-primary" %>
      <% end %>
