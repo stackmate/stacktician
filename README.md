@@ -8,6 +8,7 @@ Instead it runs everything on the client side.
 Stacktician embeds stackmate to provide the web front-end using a Rails application
 
 
+
 Follow:
 * \#cloudstack-dev on Freenode
 * <http://cloudstack.apache.org/mailing-lists.html>
