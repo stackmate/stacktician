@@ -11,7 +11,7 @@ gem 'nokogiri'
 gem 'ruote', '>= 2.3.0'
 gem 'sinatra', '~> 1.3.6'
 gem 'cloudstack_ruby_client', '= 0.0.4'
-gem 'stackmate', '>= 0.1.0'
+gem 'stackmate', '>= 0.1.1'
 gem 'thin'
 
 group :development, :test do
