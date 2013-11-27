@@ -1,3 +1,4 @@
+#!/usr/bin/env ruby
 require_relative 'sm-utils'
 require 'optparse'
 require 'json'
