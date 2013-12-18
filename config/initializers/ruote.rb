@@ -6,10 +6,15 @@ require 'stackmate'
 #
 # set up ruote storage
  
+sequel = Sequel.connect(
+      'mysql2://stacktician:stacktician@localhost/stacktician')
+
+Ruote::Sequel.create_table(sequel, false)
+
 RUOTE_STORAGE = 
   Ruote::Dashboard.new(
        Ruote::Worker.new(
-               Ruote::FsStorage.new('ruote_work')))
+               Ruote::Sequel::Storage.new(sequel)))
  
 #
 # set up ruote dashboard

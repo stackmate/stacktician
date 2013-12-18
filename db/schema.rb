@@ -13,6 +13,17 @@
 
 ActiveRecord::Schema.define(:version => 20131125035728) do
 
+  create_table "documents", :id => false, :force => true do |t|
+    t.string  "ide",                             :null => false
+    t.integer "rev",                             :null => false
+    t.string  "typ",              :limit => 55,  :null => false
+    t.text    "doc",                             :null => false
+    t.string  "wfid"
+    t.string  "participant_name", :limit => 512
+  end
+
+  add_index "documents", ["wfid"], :name => "documents_wfid_index"
+
   create_table "stack_outputs", :force => true do |t|
     t.string   "key"
     t.string   "value"

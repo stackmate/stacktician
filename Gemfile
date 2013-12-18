@@ -13,6 +13,9 @@ gem 'sinatra', '~> 1.3.6'
 gem 'cloudstack_ruby_client', '= 0.0.4'
 gem 'stackmate', '>= 0.1.1'
 gem 'thin'
+gem 'mysql2'
+gem 'ruote-sequel'
+
 
 group :development, :test do
   gem 'sqlite3', '1.3.5'
