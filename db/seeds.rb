@@ -30,7 +30,7 @@ end
 links.each do |l|
   u = URI(l)
   name = (u.path.split '/')[2]
-  name = name.split('_').join(' ').split('-').join(' ').gsub('.template', '')
+  name = name.split('_').join(' ').split('-').join(' ').gsub('.template', '').capitalize
   p name
   next if name.length > 49
   blob = open(l).read()
