@@ -1,5 +1,5 @@
 class API::StacksController < ApplicationController
-  before_filter :authenticate_request
+  before_filter :authenticate_request, :except => [:resource_metadata]
 
   def index
     @stacks = @api_user.stacks
@@ -90,6 +90,17 @@ class API::StacksController < ApplicationController
     resource['status'] = r.status
     resource['timestamp'] = r.updated_at
     resource['type'] = r.typ
+    resource['']
+    render :json => {"error" => "false","response"=>{"stack_id" => params[:id],"resource_name" => params[:name],"resource" => resource}}
+  end
+
+  def resource_metadata
+    @stack = Stack.find_by_stack_id!(params[:id])
+    r = @stack.stack_resources.find_by_logical_id!(params[:name])
+    resource = {}
+    resource['name'] = r.logical_id
+    resource['status'] = r.status
+    resource['metadata'] = r.metadata
     render :json => {"error" => "false","response"=>{"stack_id" => params[:id],"resource_name" => params[:name],"resource" => resource}}
   end
 

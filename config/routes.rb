@@ -14,6 +14,7 @@ Stacktician::Application.routes.draw do
   match '/signout', to: 'sessions#destroy', via: :delete
 
   match '/waitcondition/*handle_spec', to: 'stacks#wait_condition', :as => :waitcondition
+  get '/metadata/:id/:name', to: 'api/stacks#resource_metadata'
 
   namespace :api, :defaults => {:format => :json} do
     resources :stacks do
