@@ -12,6 +12,12 @@
           <td>Status</td>
           <td><%= @stack.status %></td>
       </tr>
+      <% if @stack.status.include?('FAILED')%>
+      <tr>
+          <td>Reason</td>
+          <td><%= @stack.reason %></td>
+      </tr>
+      <%end%>
       <tr>
           <td>Created</td>
           <td><%= @stack.created_at %></td>

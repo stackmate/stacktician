@@ -57,6 +57,19 @@ class Stack < ActiveRecord::Base
       pdef = process_definition(parser, templ)
       #logger.debug "pdef= #{pdef.inspect}"
       #logger.debug "parser.templ = #{parser.templ.inspect}"
+      #TODO better flow
+      if(!validate_cs_user)
+        logger.error("Invalid CloudStack API and Secret keys")
+        self.status = 'CREATE_FAILED'
+        self.reason = 'Invalid CloudStack API and Secret keys'
+        self.stack_resources.each do |r|
+          r.status = 'CREATE_FAILED'
+          r.save
+        end
+        self.save
+        return
+      end
+
       wfid = RUOTE.launch(pdef, parser.templ)
       logger.info  "Finished launch #{wfid}"
       update_attributes(:launched_at => Time.now, :ruote_wfid => wfid.to_s)
@@ -78,7 +91,7 @@ class Stack < ActiveRecord::Base
     j = JSON.parse(self.stack_template.body)
     #find the wait conditions that get unblocked by the supplied wait handle
     wait_conditions = j['Resources'].inject([]) {
-        |result, (key, val)|  result << key if val['Type'] == 'AWS::CloudFormation::WaitCondition' && 
+        |result, (key, val)|  result << key if ['AWS::CloudFormation::WaitCondition','StackMate::WaitCondition'].include?(val['Type']) &&
         val['Properties']['Handle']['Ref'] == handle;
         result
     }
@@ -113,6 +126,10 @@ class Stack < ActiveRecord::Base
 
 
   private
+
+    def validate_cs_user
+      Stacktician::CloudStack.validate_user_keys(self.user.cs_api_key, self.user.cs_sec_key)
+    end
 
     def create_stack_id
       self.stack_id = SecureRandom.urlsafe_base64
