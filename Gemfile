@@ -2,18 +2,20 @@ source 'https://rubygems.org'
 
 gem 'rails', '3.2.13'
 gem 'bootstrap-sass', '~> 2.3.1.0'
-gem 'bcrypt-ruby', '3.0.1'
+gem 'bcrypt-ruby', '3.0.0'
+gem 'bcrypt-ruby', '3.0.0', platform: :jruby
 gem 'faker', '1.0.1'
 gem 'will_paginate', '3.0.3'
 gem 'bootstrap-will_paginate', '0.0.6'
 gem 'wicked'
 gem 'nokogiri'
 gem 'ruote', '>= 2.3.0'
-gem 'sinatra', '~> 1.3.6'
+#gem 'sinatra', '~> 1.3.6'
 gem 'cloudstack_ruby_client', '= 0.0.4'
 gem 'stackmate', '>= 0.2.0'
-gem 'thin'
-
+#gem 'thin'
+gem 'puma'
+gem 'activerecord-jdbcsqlite3-adapter', platform: :jruby
 group :development, :test do
   gem 'sqlite3', '1.3.5'
   gem 'rspec-rails', '2.11.0'
@@ -26,11 +28,11 @@ end
 
 # Gems used only for assets and not required
 # in production environments by default.
-group :assets do
+#group :assets do
   gem 'sass-rails',   '3.2.5'
   gem 'coffee-rails', '3.2.2'
   gem 'uglifier', '1.2.3'
-end
+#end
 
 gem 'jquery-rails', '2.0.2'
 
