@@ -11,7 +11,8 @@
 #
 
 class User < ActiveRecord::Base
-  attr_accessible :email, :name, :password, :password_confirmation, :remember_token, :cs_api_key, :cs_sec_key
+  attr_accessible :email, :name, :password, :password_confirmation, :remember_token, :cs_api_key, :cs_sec_key, :api_key, :sec_key
+  #TODO api_key and sec_key need to be added above. done as of now to allow these fields to show up on settings tab
   has_secure_password
   has_many :stacks, dependent: :destroy
   has_many :stack_templates, dependent: :destroy

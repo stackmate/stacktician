@@ -1,4 +1,4 @@
-require 'cloudstack_ruby_client'
+#require 'cloudstack_ruby_client'
 
 module Stacktician
   module CloudStack
@@ -10,7 +10,8 @@ module Stacktician
       if !initialized or ENV['DEMO_MODE'] == 'NOOP'
           return nil
       end
-      client = CloudstackRubyClient::Client.new(url, apikey, seckey, false)
+#      client = CloudstackRubyClient::Client.new(url, apikey, seckey, false)
+      client = StackMate::CloudStackClient.new(url, apikey, seckey, false)
       client
     end
 
@@ -27,7 +28,8 @@ module Stacktician
       args['username'] = name 
       args['email'] = email  
       args['password'] = password 
-      resp = client.send('createAccount', args)
+#      resp = client.send('createAccount', args)
+      resp = client.api_call('createAccount', args)
       userid = resp['account']['user'][0]['id']
       userid
     end
@@ -38,7 +40,8 @@ module Stacktician
           return nil
       end
       keypair = {}
-      resp = client.send('registerUserKeys', {'id' => userid})
+#      resp = client.send('registerUserKeys', {'id' => userid})
+      resp = client.api_call('listUsers', {'username' => name})
       if resp.nil? or resp.empty?
           return nil
       end
@@ -74,6 +77,20 @@ module Stacktician
         end
         keypair
     end
-
+    def CloudStack.validate_user_keys(apikey, secretkey)
+      client = self.get_client
+      if ENV['DEMO_MODE'] == 'NOOP'
+        return true
+      end
+      if !client
+        return false
+      end
+      resp = client.api_call('getUser',{'userapikey' => apikey})
+      if resp.nil? or resp.empty?
+        return false
+      end
+      secretkey_in_cs = resp['user']['secretkey']
+      return secretkey.to_s.eql?(secretkey_in_cs)
+    end
   end
 end

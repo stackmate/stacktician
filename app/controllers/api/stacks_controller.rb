@@ -1,5 +1,5 @@
 class API::StacksController < ApplicationController
-  before_filter :authenticate_request
+  before_filter :authenticate_request, :except => [:resource_metadata, :resource_metadata_cfn]
 
   def index
     @stacks = @api_user.stacks
@@ -91,6 +91,42 @@ class API::StacksController < ApplicationController
     resource['timestamp'] = r.updated_at
     resource['type'] = r.typ
     render :json => {"error" => "false","response"=>{"stack_id" => params[:id],"resource_name" => params[:name],"resource" => resource}}
+  end
+
+  def resource_metadata
+    @stack = Stack.find_by_stack_id!(params[:id])
+    r = @stack.stack_resources.find_by_logical_id!(params[:name])
+    resource = {}
+    resource['name'] = r.logical_id
+    resource['status'] = r.status
+    resource['metadata'] = r.metadata
+    render :json => {"error" => "false","response"=>{"stack_id" => params[:id],"resource_name" => params[:name],"resource" => resource}}
+  end
+
+  def resource_metadata_cfn
+    @stack = Stack.find_by_stack_name!(params[:StackName])
+    r = @stack.stack_resources.find_by_logical_id!(params[:LogicalResourceId])
+    data = {}
+    data['Description'] = r.description
+    data['ResourceType'] = r.typ
+    data['LogicalResourceId'] = r.logical_id
+    data['Metadata'] = r.metadata.to_json
+    data['PhysicalResourceId'] = r.physical_id
+    data['ResourceStatus'] = r.status
+    data['ResourceStatusReason'] = ''
+    data['StackId'] = @stack.stack_id
+    data['StackName'] = params[:StackName]
+    data['LastUpdatedTimestamp'] = 1388746890.0
+    respmetadata = {}
+    respmetadata['RequestId'] = "be8e5b39-40b7-11e3-90b2-d9d62a5d5348"
+    data['ResponseMetadata'] = respmetadata
+    detail = {}
+    detail['StackResourceDetail'] = data
+    result = {}
+    result['DescribeStackResourceResult'] = detail
+    #response = {}
+    #response['DescribeStackResourceResponse'] = result
+    render :json => {"DescribeStackResourceResponse" => result}
   end
 
   def resources
