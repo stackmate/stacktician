@@ -59,9 +59,9 @@ class Stack < ActiveRecord::Base
       #logger.debug "parser.templ = #{parser.templ.inspect}"
       #TODO better flow
       if(!validate_cs_user)
-        logger.error("Invalid CloudStack API and Secret keys")
+        logger.error("Invalid CloudStack API and Secret keys, or server unreachable")
         self.status = 'CREATE_FAILED'
-        self.reason = 'Invalid CloudStack API and Secret keys'
+        self.reason = 'Invalid CloudStack API and Secret keys, or server unreachable'
         self.stack_resources.each do |r|
           r.status = 'CREATE_FAILED'
           r.save

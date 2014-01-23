@@ -78,19 +78,24 @@ module Stacktician
         keypair
     end
     def CloudStack.validate_user_keys(apikey, secretkey)
-      client = self.get_client
       if ENV['DEMO_MODE'] == 'NOOP'
         return true
       end
+      url = ENV['CS_URL']
+      if url.nil?
+        return false
+      end
+      client = StackMate::CloudStackClient.new(url, apikey, secretkey, false)
       if !client
         return false
       end
-      resp = client.api_call('getUser',{'userapikey' => apikey})
-      if resp.nil? or resp.empty?
+      begin
+        resp = client.api_call('listZones',{})
+      rescue 
         return false
+        #HTTPUnauthorized error, or any other for that matter
       end
-      secretkey_in_cs = resp['user']['secretkey']
-      return secretkey.to_s.eql?(secretkey_in_cs)
+      return true
     end
   end
 end
