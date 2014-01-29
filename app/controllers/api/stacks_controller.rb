@@ -49,7 +49,8 @@ class API::StacksController < ApplicationController
       @stack = @api_user.stacks.build()
       ensure_parameters(template_id)
       @stack.stack_name = params[:stack_name]
-      raise "Stack Name needed and should be unique" if (params[:stack_name].nil? && !Stack.find_by_stack_name(params[:stack_name]).nil?)
+      raise "Stack Name needed and should be unique" if (params[:stack_name].nil? || !Stack.find_by_stack_name(params[:stack_name]).nil?)
+      @stack.status = "CREATE_IN_PROGRESS"
       @stack.save
       @stack.stack_template_id = template_id
       @stack.params_from_template
