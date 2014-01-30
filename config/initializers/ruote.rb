@@ -7,7 +7,7 @@ require 'stackmate'
 # set up ruote storage
  
 sequel = Sequel.connect(
-      'mysql2://stacktician:stacktician@localhost/stacktician')
+      'jdbc:mysql://stacktician:stacktician@localhost/stacktician')
 
 Ruote::Sequel.create_table(sequel, false)
 
