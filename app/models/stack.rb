@@ -133,7 +133,7 @@ class Stack < ActiveRecord::Base
     end
 
     def create_stack_id
-      self.stack_id = SecureRandom.urlsafe_base64
+      self.stack_id = SecureRandom.urlsafe_base64 if self.stack_id.nil?
     end
 
     def process_definition (parser, templ)
