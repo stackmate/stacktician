@@ -1,5 +1,5 @@
 class StacksController < ApplicationController
-  before_filter :signed_in_user
+  before_filter :signed_in_user, :except => [:wait_condition]
 
   def index
     @stacks = current_user.stacks
