@@ -1,7 +1,7 @@
 source 'https://rubygems.org'
 
 gem 'rails', '3.2.13'
-gem 'bootstrap-sass', '~> 2.3.1.0'
+gem 'bootstrap-sass', '~> 3.1.0'
 gem 'bcrypt-ruby', '3.0.0'
 gem 'bcrypt-ruby', '3.0.0', platform: :jruby
 gem 'faker', '1.0.1'
@@ -14,16 +14,20 @@ gem 'ruote', '>= 2.3.0'
 gem 'cloudstack_ruby_client', '= 0.0.4'
 gem 'stackmate', '>= 0.2.0'
 #gem 'thin'
-gem 'mysql2', platform: :ruby
+#gem 'mysql2', platform: :ruby
 #gem 'jdbc-mysql', platform: :jruby
-#gem 'activerecord-jdbc-adapter', platform: :jruby
+gem 'activerecord-jdbc-adapter', platform: :jruby
 gem 'activerecord', '~> 3.2.13'
 gem 'activerecord-jdbcmysql-adapter', platform: :jruby
 gem 'ruote-sequel'
 gem 'warbler'
+gem 'trinidad', platform: :jruby
+gem 'get_back', platform: :jruby
 
 group :development, :test do
-  gem 'sqlite3', '1.3.5'
+#  gem 'sqlite3', '1.3.5', platform: :ruby
+  gem 'activerecord-jdbcsqlite3-adapter', platform: :jruby
+  gem 'jdbc-sqlite3'
   gem 'rspec-rails', '2.11.0'
   gem 'spork', '0.9.2'
 end
@@ -45,8 +49,4 @@ gem 'jquery-rails', '2.0.2'
 group :test do
   gem 'capybara', '1.1.2'
   gem 'factory_girl_rails', '4.1.0'
-end
-
-group :production do
-  gem 'pg', '0.12.2'
 end

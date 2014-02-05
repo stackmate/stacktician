@@ -52,7 +52,7 @@ class Stack < ActiveRecord::Base
       parameters['AWS::Region'] = 'us-east-1' #TODO handle this better
       parameters['CloudStack::StackName'] = self.stack_name
       parameters['CloudStack::StackId'] = self.stack_id
-      parameters['CloudStack::StackMateApiURL'] = ENV['WAIT_COND_URL_BASE']?ENV['WAIT_COND_URL_BASE']:StackMate::WAIT_COND_URL_BASE_DEFAULT]
+      parameters['CloudStack::StackMateApiURL'] = ENV['WAIT_COND_URL_BASE']?ENV['WAIT_COND_URL_BASE']:StackMate::WAIT_COND_URL_BASE_DEFAULT
       templ = JSON.parse(self.stack_template.body)
       parser = StackMate::Stacker.new(self.stack_template.body, self.stack_name, parameters)
       pdef = process_definition(parser, templ)
