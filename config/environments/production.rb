@@ -67,4 +67,4 @@ Stacktician::Application.configure do
 end
 
 #configure the wait condition base url (used by the WaitHandle participant)
-Stacktician.configure(:wait_condition_base_url, ENV['BASE_URL']+'waitcondition/')
+Stacktician.configure(:wait_condition_base_url, ENV['WAIT_COND_URL_BASE']+'waitcondition/')

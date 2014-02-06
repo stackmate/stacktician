@@ -37,5 +37,5 @@ Stacktician::Application.configure do
 end
 
 #configure the wait condition base url (used by the WaitHandle participant)
-base = ENV['BASE_URL']?ENV['BASE_URL']:'http://localhost:3000/'
+base = ENV['WAIT_COND_URL_BASE']?ENV['WAIT_COND_URL_BASE']:'http://localhost:3000/'
 Stacktician.configure(:wait_condition_base_url, base+'waitcondition/')
