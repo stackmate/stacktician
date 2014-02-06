@@ -1,5 +1,7 @@
 
 class Stack < ActiveRecord::Base
+  extend GetBack::JoJo
+
   attr_accessible :description, :reason, :stack_id, :stack_name, :status, :stack_template_id, :launched_at, :stack_parameters_attributes, :ruote_wfid, :timeout
   belongs_to :user
   belongs_to :stack_template
@@ -74,7 +76,13 @@ class Stack < ActiveRecord::Base
       wfid = RUOTE.launch(pdef, parser.templ)
       logger.info  "Finished launch #{wfid}"
       update_attributes(:launched_at => Time.now, :ruote_wfid => wfid.to_s)
-      wait_task = Thread.new(wfid, self.stack_name) { |wfid, stack_name|
+      wait_task = async_wait(wfid)
+      logger.info  "Finished full stack launch #{wfid}"
+
+  end
+
+  def async_wait (wfid)
+    Thread.new(wfid, self.stack_name) { |wfid, stack_name|
           RUOTE.wait_for(wfid)
           errors = RUOTE.errors(wfid)
           logger.info "Stack completed execution"
@@ -84,9 +92,8 @@ class Stack < ActiveRecord::Base
             logger.info "Stack #{stack_name} completed execution"
           end
       }
-      logger.info  "Finished full stack launch #{wfid}"
-
   end
+  get_back :async_wait, :pool => 10
 
   def wait_condition (handle)
     j = JSON.parse(self.stack_template.body)
@@ -150,7 +157,7 @@ class Stack < ActiveRecord::Base
 
         opts = {:stack_id => self.id}
         RUOTE.register_participant 'Output', Stacktician::Participants.class_for('Outputs'), opts
-        #RUOTE.register_participant 'Notify', Stacktician::Participants.class_for('StackMate::StackNotifier'), opts
+        RUOTE.register_participant 'Notify', Stacktician::Participants.class_for('StackMate::StackNotifier'), opts
 
         #participants << 'Output'
         timeout = self.timeout.to_s + "s"
@@ -161,8 +168,8 @@ class Stack < ActiveRecord::Base
                 __send__('Output')
             end
             define 'rollback', :timeout => timeout do
-                #__send__('Notify')
                 participants.reverse_each.collect {|name| __send__(name, :operation => :rollback) }
+                #__send__('Notify')
             end
         end
 

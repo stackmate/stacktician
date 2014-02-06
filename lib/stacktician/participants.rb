@@ -128,7 +128,7 @@ module Stacktician
     # e.g, StackMate::NoOpResource gets replaced by Stacktician::NoOpResource
     def Participants.class_for(cf_resource)
       c = StackMate.class_for(cf_resource)
-      c.gsub!('StackMate', 'Stacktician') if (c.include?("WaitCondition") || c.include?("NoOp"))
+      c.gsub!('StackMate', 'Stacktician') if (c.include?("WaitCondition") || c.include?("NoOp") || c.include?("StackNotifier"))
       c
       #cf_resource
     end
@@ -327,14 +327,17 @@ module Stacktician
     end
 
     def on_workitem
-      logger.error("\n\nINITIATING STACK ROLLBACK\n\n")
+      reply
+    end
+
+    def on_reply
+      #logger.error("\n\nINITIATING STACK ROLLBACK\n\n")
       ActiveRecord::Base.connection_pool.with_connection do
         stack = Stack.find(@opts['stack_id'])
         stack.status = 'CREATE_FAILED'
-        stack.reason = 'Execution error'
+        #stack.reason = 'Execution error'
         stack.save
       end
-      reply
     end
   end
 end
