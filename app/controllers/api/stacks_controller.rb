@@ -111,13 +111,14 @@ class API::StacksController < ApplicationController
     data['Description'] = r.description
     data['ResourceType'] = r.typ
     data['LogicalResourceId'] = r.logical_id
-    data['Metadata'] = r.metadata.to_json
+    data['Metadata'] = r.metadata
     data['PhysicalResourceId'] = r.physical_id
     data['ResourceStatus'] = r.status
-    data['ResourceStatusReason'] = ''
+    data['ResourceStatusReason'] = 'Stacktician_Resource'
     data['StackId'] = @stack.stack_id
     data['StackName'] = params[:StackName]
-    data['LastUpdatedTimestamp'] = 1388746890.0
+    #TODO Fix timestamp and request ID after Simon is done with demo
+    data['LastUpdatedTimestamp'] = Time.new.to_i
     respmetadata = {}
     respmetadata['RequestId'] = "be8e5b39-40b7-11e3-90b2-d9d62a5d5348"
     data['ResponseMetadata'] = respmetadata
@@ -125,8 +126,6 @@ class API::StacksController < ApplicationController
     detail['StackResourceDetail'] = data
     result = {}
     result['DescribeStackResourceResult'] = detail
-    #response = {}
-    #response['DescribeStackResourceResponse'] = result
     render :json => {"DescribeStackResourceResponse" => result}
   end
 
