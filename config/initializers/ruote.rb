@@ -11,25 +11,28 @@ sequel = Sequel.connect(
 
 Ruote::Sequel.create_table(sequel, false)
 
-RUOTE_STORAGE = 
-  Ruote::Dashboard.new(
-       Ruote::Worker.new(
-               Ruote::Sequel::Storage.new(sequel)))
+#RUOTE_STORAGE = 
+#  Ruote::Dashboard.new(
+#       Ruote::Worker.new(
+#               Ruote::Sequel::Storage.new(sequel)))
  
 #
 # set up ruote dashboard
  
-RUOTE = if defined?(Rake)
-  #
-  # do not start a ruote worker in a rake task
-  #
-  Ruote::Dashboard.new(RUOTE_STORAGE)
-else
-  #
-  # start a worker
-  #
-  Ruote::Dashboard.new(Ruote::Worker.new(RUOTE_STORAGE))
-end
+RUOTE = Ruote::Dashboard.new(Ruote::Worker.new(Ruote::Sequel::Storage.new(sequel)))
+# RUOTE = if defined?(Rake)
+#   #
+#   # do not start a ruote worker in a rake task
+#   #
+#   p "aaaa"
+#   Ruote::Dashboard.new(Ruote::Sequel::Storage.new(sequel))
+# else
+#   #
+#   # start a worker
+#   #
+#   p "bbbb"
+#   Ruote::Dashboard.new(Ruote::Worker.new(Ruote::Sequel::Storage.new(sequel)))
+# end
 
 RUOTE.noisy = true
  

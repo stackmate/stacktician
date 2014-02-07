@@ -168,8 +168,8 @@ class Stack < ActiveRecord::Base
                 __send__('Output')
             end
             define 'rollback', :timeout => timeout do
+                __send__('Notify')
                 participants.reverse_each.collect {|name| __send__(name, :operation => :rollback) }
-                #__send__('Notify')
             end
         end
 
