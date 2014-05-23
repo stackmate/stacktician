@@ -21,6 +21,7 @@ class Stack < ActiveRecord::Base
       param = self.stack_parameters.build()
       param.param_name = p[0]
       param.param_value = p[1]['Default']
+      param.description = p[1]['Description']
     end
   end
 

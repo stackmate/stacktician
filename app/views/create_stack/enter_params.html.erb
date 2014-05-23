@@ -11,7 +11,7 @@
     <dl class="dl-horizontal">
         <%= form_for(@stack, :url => wizard_path, :method => :put) do |f| %>
           <%= f.fields_for :stack_parameters do |p| %>
-              <dt><strong><%= p.label :param_value, p.object.param_name %><strong> </dt>
+              <dt class="hint" rel="popover" data-content="<%= p.object.description %>"><strong><%= p.label :param_value, p.object.param_name %><strong> </dt>
               <dd><%= p.text_field :param_value %> </dd>
           <% end %>
           <dt><strong><%= f.label :timeout, "Stack Timeout (seconds)"%><strong></dt>

@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20131204194027) do
+ActiveRecord::Schema.define(:version => 20140523211946) do
 
   create_table "stack_outputs", :force => true do |t|
     t.string   "key"
@@ -28,6 +28,7 @@ ActiveRecord::Schema.define(:version => 20131204194027) do
     t.integer  "stack_id"
     t.datetime "created_at",  :null => false
     t.datetime "updated_at",  :null => false
+    t.string   "description"
   end
 
   create_table "stack_resources", :force => true do |t|
