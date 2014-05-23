@@ -16,6 +16,7 @@
           <% end %>
           <dt><strong><%= f.label :timeout, "Stack Timeout (seconds)"%><strong></dt>
           <dd><%= f.text_field :timeout %></dd>
+        <%= f.submit "Cancel", class: "btn btn-large btn-warning" %>
         <%= f.submit "Next", class: "btn btn-large btn-primary" %>
      <% end %>
  </dl>

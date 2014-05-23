@@ -1,6 +1,19 @@
 class CreateStackController < ApplicationController
   include Wicked::Wizard
+  before_filter :check_for_cancel
   steps :select_template, :enter_params, :launch
+
+  def check_for_cancel
+     if params[:commit] == "Cancel"
+       case step
+         when :enter_params
+           Stack.where(stack_name: session[:current_stack]).where(user_id: self.current_user.id).delete_all
+         when :launch
+           Stack.where(stack_name: session[:current_stack]).where(user_id: self.current_user.id).delete_all
+       end
+       redirect_to root_url
+     end
+  end
 
   def show
       case step

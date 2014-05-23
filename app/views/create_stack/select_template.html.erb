@@ -3,6 +3,7 @@
   <%= f.text_field :stack_name, :placeholder => 'Stack Name' %>
   <%= f.collection_select(:stack_template_id, StackTemplate.all, :id, :template_name , :prompt => true) %>
 
+  <%= f.submit 'Cancel', :class => 'btn btn-warning' %>
   <%= f.submit 'Next', :class => 'btn btn-primary' %>
 <% end %>
 

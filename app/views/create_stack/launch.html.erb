@@ -1,5 +1,6 @@
 <h2>Launch your stack </h2>
 <%= form_for(@stack, :url => wizard_path, :method => :put) do |f| %>
+<%= f.submit "Cancel", class: "btn btn-large btn-danger" %>
 <%= f.submit "Launch your stack", class: "btn btn-large btn-primary" %>
 <% end %>
 
