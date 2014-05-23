@@ -3,10 +3,6 @@
   <td><p class="text-<%= stack_status_style(stack) %>" > <%= stack.status %> </p> </td>
   <td><%= time_ago_in_words(stack.created_at) %> ago</td>
   <td>
-    <%= link_to t('.update', :default => t("helpers.links.update")),
-                root_url,
-                :data => { :confirm => t('.confirm', :default => t("helpers.links.confirm", :default => 'Not Yet Supported')) },
-                :class => 'btn btn-mini' %>
     <%= link_to t('.delete', :default => t("helpers.links.delete")),
                 root_url,
                 :data => { :confirm => t('.confirm', :default => t("helpers.links.confirm", :default => 'Not Yet Supported')) },
