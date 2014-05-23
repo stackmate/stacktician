@@ -10,7 +10,7 @@
   <tbody>
     <% @stack.stack_parameters.each do |param| %>
       <tr>
-        <td><%= param.param_name %></td>
+        <td class="hint" rel="popover" data-container="body" data-content="<%= param.description %>"><%= param.param_name %></td>
         <td><%= param.param_value %></td>
       </tr>
     <% end %>
