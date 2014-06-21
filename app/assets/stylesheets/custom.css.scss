@@ -148,7 +148,7 @@ aside {
 input, textarea, select, .uneditable-input {
   border: 1px solid #bbb;
   width: 100%;
-  padding: 10px;
+  /* padding: 10px; issue #9 */
   margin-bottom: 15px;
   @include box_sizing;
 }
