@@ -2,7 +2,7 @@ class StacksController < ApplicationController
   before_filter :signed_in_user, :except => [:wait_condition]
 
   def index
-    @stacks = current_user.stacks
+    @stacks = current_user.stacks.where(:hidden => false)
   end
 
   def show
@@ -20,6 +20,7 @@ class StacksController < ApplicationController
   end
 
   def destroy
+    #TODO
   end
 
   #Respond to cfn-signal HTTP calls to unblock wait conditions
@@ -36,6 +37,16 @@ class StacksController < ApplicationController
     @stack.wait_condition(handle)
     #cfn-signal does not expect anything in response
     render :nothing =>true
+  end
+
+
+  def update
+    @stack = Stack.find(params[:id])
+    if @stack
+      @stack.hidden = true
+      @stack.save
+    end
+    redirect_to root_url
   end
 
 end

@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20140523211946) do
+ActiveRecord::Schema.define(:version => 20140623063456) do
 
   create_table "stack_outputs", :force => true do |t|
     t.string   "key"
@@ -72,6 +72,7 @@ ActiveRecord::Schema.define(:version => 20140523211946) do
     t.datetime "launched_at"
     t.string   "ruote_wfid"
     t.integer  "timeout",           :default => 600
+    t.boolean  "hidden"
   end
 
   add_index "stacks", ["stack_name"], :name => "index_stacks_on_stack_name"

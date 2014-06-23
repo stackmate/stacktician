@@ -7,7 +7,7 @@
               </section>
             </aside>
             <div class="span9">
-              <h3>Stacks (<%= current_user.stacks.count %>)</h3>
+              <h3>Stacks <span class="badge badge-primary"> <%= current_user.stacks.count %> </span></h3>
               <%- model_class = Stack -%>
               <table class="table table-striped">
                 <thead>
@@ -22,6 +22,9 @@
                     <%= render @stacks %>
                 </tbody>
               </table>
+              <!-- <div class="btn-group" data-toggle="buttons">
+                 <button type="button" id="show_hidden" class="btn btn-primary" data-toggle="button">Show Hidden</button>
+              </div> -->
           </div>
       </div>
     <% else %>

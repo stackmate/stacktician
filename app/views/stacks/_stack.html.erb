@@ -3,9 +3,10 @@
   <td><p class="text-<%= stack_status_style(stack) %>" > <%= stack.status %> </p> </td>
   <td><%= time_ago_in_words(stack.created_at) %> ago</td>
   <td>
-    <%= link_to t('.delete', :default => t("helpers.links.delete")),
-                root_url,
-                :data => { :confirm => t('.confirm', :default => t("helpers.links.confirm", :default => 'Not Yet Supported')) },
-                :class => 'btn btn-mini btn-danger' %>
+    <%= link_to t('.hide', :default => t("helpers.links.hide")),
+                stack_path(stack),
+                :method => :put,
+                :class => 'btn btn-mini' %>
+
   </td>
 </tr>
